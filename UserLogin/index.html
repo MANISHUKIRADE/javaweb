@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+
+<head>
+    <title>User Registraion</title>
+    <style>
+        .left {
+            text-align: left;
+            position: absolute;
+            left: 0px;
+            width: 300px;
+            border: 3px solid darkcyan;
+            padding: 10px;
+        }
+
+        .right {
+            text-align: left;
+            position: absolute;
+            right: 0px;
+            width: 300px;
+            border: 3px solid darkcyan;
+            padding: 10px;
+        }
+    </style>
+</head>
+
+<body onload="onloadFunction()">
+    <div class="left" id="register">
+        Name: <input type="text" id="Name"><br><br>
+        PassWord: <input type="password" id="passWord"><br><br>
+        Confirm PassWord:<input type="password" id="confirmpass"><br><br>
+        <button id="register" onclick="registerUser()">Register</button><br>
+    </div>
+    <div class="right">
+        <div id="nameofuser"> Name: <input type="text" id="lName"><br><br>
+            PassWord: <input type="password" id="lpassWord"><br><br>
+        </div>
+        <button id="login" onclick="loginUser()">Login!</button><br>
+
+    </div>
+    <div id="taskinput"> </div>
+    <div id="mytext"></div>
+    <script>
+
+        function onloadFunction() {
+            flag = 1;
+            if (localStorage.getItem("currentuser")) {
+                var user1 = JSON.parse(localStorage.getItem("currentuser"))
+                var user = JSON.parse(localStorage.getItem("swabhavTask"));
+                for (index = 0; index < localStorage.countRegisterUser; index++) {
+                    if ((user[index].Name == user1.Name) && (user[index].PassWord == user1.PassWord)) {
+                        loginuser = user[index];
+                        getTheUserTask(loginuser);
+                        console.log("Welcome   " + loginuser.Name)
+                        break;
+                    }
+                }
+
+                printTask(loginuser);
+            }
+        }
+
+
+        var loginuser;
+
+        var User = [];
+        var userlogin = 0;
+        if (localStorage.countRegisterUser) {
+            localStorage.countRegisterUser = Number(localStorage.countRegisterUser);
+        } else {
+            localStorage.countRegisterUser = 0;
+
+        }
+        var string;
+        if (localStorage.getItem("swabhavTask")) {
+            string = localStorage.getItem("swabhavTask");
+        }
+
+        function registerUser() {
+            name = document.getElementById("Name").value;
+            Passwo = document.getElementById("passWord").value
+            if (Passwo == document.getElementById("confirmpass").value) {
+                id = Number(localStorage.countRegisterUser) + 1;
+                User.push({ id: Number(localStorage.countRegisterUser) + 1, Name: name, PassWord: Passwo, lenght: 0, Task: [] })
+
+                if ((localStorage.getItem("swabhavTask")) && (flag == 1)) {
+
+                    localStorage.setItem("swabhavTask", JSON.stringify(User));
+                } else {
+                    localStorage.setItem("swabhavTask", JSON.stringify(User))
+                    flag = 0;
+                }
+                document.getElementById("Name").value = null
+                document.getElementById("passWord").value = null
+                document.getElementById("confirmpass").value = null
+                localStorage.countRegisterUser = Number(localStorage.countRegisterUser) + 1;
+            }
+        }
+        function loginUser() {
+            var namel = document.getElementById("lName").value;
+            var passwol = document.getElementById("lpassWord").value;
+            console.log(localStorage.getItem("swabhavTask"))
+            user = JSON.parse(localStorage.getItem("swabhavTask"));
+
+            for (index = 0; index < localStorage.countRegisterUser; index++) {
+                if ((user[index].Name == namel) && (user[index].PassWord == passwol)) {
+                    loginuser = user[index];
+                    getTheUserTask(loginuser);
+                    console.log("Welcome   " + loginuser.Name)
+                    break;
+                }
+            }
+            localStorage.setItem("currentuser", JSON.stringify(loginuser));
+            printTask(loginuser);
+        }
+
+        function getTheUserTask(loginuser) {
+            document.getElementById("Name").style.display = "none"
+            document.getElementById("passWord").style.display = "none"
+            document.getElementById("confirmpass").style.display = "none"
+            document.getElementById("register").style.display = "none"
+            document.getElementById("lName").style.display = "none"
+            document.getElementById("lpassWord").style.display = "none"
+            document.getElementById("login").style.display = "none"
+            document.getElementById("taskinput").innerHTML = "Task Label: <input type=text id=myinput ><br><button id=addbutton onclick=addTask(loginuser) >Add Task</button>"
+
+            document.getElementById("nameofuser").innerHTML = "User Name   " + loginuser.Name + "<br><br><button id=logout onclick=logOut() >Logout</button>";
+
+
+
+
+        }
+        function addTask(loginuser) {
+
+            var id = loginuser.id;
+            var name = loginuser.Name;
+            var passw = loginuser.PassWord;
+            var length = loginuser.lenght;
+            var taskvalue = document.getElementById("myinput").value;
+            loginuser.Task[length] = document.getElementById("myinput").value;
+            loginuser.lenght++;
+            User1 = JSON.parse(localStorage.getItem("swabhavTask"))
+            console.log(loginuser.Task)
+            User1[id - 1] = loginuser;
+            localStorage.setItem("swabhavTask", JSON.stringify(User1))
+            document.getElementById("myinput").value = null
+            printTask(loginuser);
+
+        }
+
+        function printTask(loginuser) {
+                var  string ="<p> "
+            for (index = 0; index < loginuser.lenght; index++) {
+                string = string + "<p><button id="+index+" onclick=deleteTask(loginuser,this)>Delete Task</button>" + loginuser.Task[index] + "</p>"
+                document.getElementById("mytext").innerHTML = string;
+                
+            }
+        }
+        function logOut() {
+            localStorage.removeItem("currentuser");
+            document.location.reload(true);
+        }
+        function deleteTask(loginuser,button){
+        
+        if(loginuser.lenght>0){
+         var butid = button.id;
+        
+        loginuser.Task.splice(butid,1);
+        loginuser.lenght--;
+        id =loginuser.id;
+        User[id-1] =loginuser;
+    
+        localStorage.setItem("swabhavTask",JSON.stringify(User))
+        printTask(loginuser);
+        }
+        }
+
+
+
+
+
+    </script>
+
+</body>

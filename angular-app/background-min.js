@@ -1,0 +1,1 @@
+angular.module("colorchange",[]).controller("colourChangeController",["$rootScope","$scope",function(o,c){c.color="red",c.changeFunction=function(){o.pageStyle={"background-color":c.color}}}]);

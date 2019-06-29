@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+
+<head>
+    <title>Student Services</title>
+    <style>
+        table,
+        th,
+        td {
+            border: 1px solid grey;
+            border-collapse: collapse;
+            padding: 5px;
+        }
+
+        table tr:nth-child(odd) {
+            background-color: #f1f1f1;
+        }
+
+        table tr:nth-child(even) {
+            background-color: #ffffff;
+        }
+    </style>
+
+</head>
+
+<body ng-app="studentServices">
+    <div ng-controller="studentControllerEditor">
+        Name: <input type="text" ng-model="name"><br><br>
+        Age: <input type="number" ng-model="Age"><br><br>
+        RollNo: <input type="number" ng-model="rollno"><br><br>
+        Email: <input type="Email" ng-model="email"><br><br>
+        Select Gender: <select ng-model="ismale">
+
+            <option value="true" ng-selected="male">Male</option>
+            <option value="false" ng-selected="female">Female</option>
+        </select><br><br>
+        <input type="date" ng-model="date"><br><br>
+        <br><br>
+        <button ng-click="addStudent()" ng-hide="editModeOn">Add Student</button>
+        <button ng-click="EditStudentAct()" ng-show="editModeOn">Edit Student</button>
+        <br><br>
+    </div>
+    <div ng-controller="studentController">
+        <table>
+
+            <head>
+                <tr>
+                    <td>Delete</td>
+                    <td>Edit</td>
+                    <td>Name</td>
+                    <td>Rollno</td>
+                    <td>Email</td>
+                    <td>Gender</td>
+                    <td>age</td>
+                    <td>Date</td>
+                </tr>
+                </tr>
+                </thead>
+                <tr ng-repeat="student in studentData">
+                    <td><button id="{{student.id}}" ng-click="studentDelete($event)">X</button> </td>
+                    <td><button id="e{{student.id}}" ng-click="studentEdit($event)">Edit</button> </td>
+                    <td>{{student.name}}</td>
+                    <td>{{student.rollNo}}</td>
+                    <td>{{student.email}}</td>
+                    <td>{{student.isMale | genderFilter }}</td>
+                    <td>{{student.age}}</td>
+                    <td>{{student.date | date : mm/dd/yyyy}}</td>
+                </tr>
+        </table>
+    </div>
+
+
+
+    <script src="angular.js"></script>
+    <script>
+        angular.module("studentServices", [])
+            .filter("genderFilter", function () {
+                return (function (isMale) {
+                    if (isMale == true) {
+                        return "Male";
+                    } else {
+                        return "Female";
+                    }
+                })
+            })
+            .factory("studentFetchService", ['$http', '$q', function ($http, $q) {
+                var obj = {};
+                obj.getStudent = function () {
+                    return $q(function (resolve, reject) {
+                        $http({
+                            method: 'GET',
+                            url: "http://gsmktg.azurewebsites.net/api/v1/techlabs/test/students"
+                        }).then(function success(response) {
+                            console.log(response);
+                            resolve(response)
+                        })
+
+                    });
+                }
+
+                obj.AddStudent = function (Name, rollno, Age, ismale, Email, date) {
+                    return $q(function (resolve, reject) {
+                        $http({
+                            method: 'POST',
+                            url: "http://gsmktg.azurewebsites.net/api/v1/techlabs/test/students/",
+                            data: {
+                                name: Name,
+                                rollNo: rollno,
+                                age: Age,
+                                isMale: ismale,
+                                email: Email,
+                                date: date
+                            }
+                        }).then(function success(response) {
+                            console.log("student added Succesfully")
+                            resolve("student added Succesfully")
+                        })
+                    })
+
+                }
+                obj.DeleteStudent = function (id) {
+                    return $q(function (resolve, reject) {
+                        $http({
+                            method: 'DELETE',
+                            url: "http://gsmktg.azurewebsites.net/api/v1/techlabs/test/students/" +
+                                id
+                        }).then(function success(response) {
+                            resolve("student Deleted")
+                        })
+                    })
+                }
+
+                obj.getStudentDataForEdit = function (id) {
+                    return $q(function (resolve, reject) {
+                        $http({
+                            method: 'GET',
+                            url: "http://gsmktg.azurewebsites.net/api/v1/techlabs/test/students/" +
+                                id
+                        }).then(function success(response) {
+                            resolve(response)
+                        })
+                    })
+                }
+                obj.editStudentData = function (id2, name1, rollno1, Age1, ismale1, email1, date) {
+                    return $q(function (resolve, reject) {
+                        $http({
+                            method: 'PUT',
+                            url: "http://gsmktg.azurewebsites.net/api/v1/techlabs/test/students/" +
+                                id2,
+                            data: {
+                                name: name1,
+                                rollNo: rollno1,
+                                age: Age1,
+                                isMale: ismale1,
+                                email: email1,
+                                date: date
+                            }
+                        }).then(function success(response) {
+                            console.log("edited")
+                            resolve("edited")
+                        })
+                    })
+                }
+
+
+
+                return obj;
+            }])
+            .controller("studentController", ['studentFetchService', '$rootScope', function (studentFetchService,
+                $rootScope) {
+
+                studentFetchService.getStudent()
+                    .then(function (result) {
+
+                        $rootScope.studentData = result.data;
+
+
+                    });
+
+
+            }])
+            .controller("studentControllerEditor", function (studentFetchService, $scope, $rootScope, $filter) {
+                $scope.addStudent = function () {
+                    var name = $scope.name;
+                    var Age = $scope.Age;
+                    var rollno = $scope.rollno;
+                    var ismale = $scope.ismale;
+                    var email = $scope.email;
+                    var date = $scope.date;
+                    $scope.name = null
+                    $scope.Age = null
+                    $scope.rollno = null
+                    $scope.ismale = null
+                    $scope.email = null
+                    studentFetchService.AddStudent(name, rollno, Age, ismale, email, date)
+                        .then(function (result) {
+                            $scope.result = result;
+                            studentFetchService.getStudent()
+                                .then(function (result) {
+                                    $rootScope.studentData = result.data;
+                                })
+
+                        })
+
+                }
+                $rootScope.studentDelete = function (event) {
+                    id1 = event.target.id;
+                    console.log(id1)
+                    studentFetchService.DeleteStudent(id1)
+                        .then(function (result) {
+                            $scope.result = result;
+                            studentFetchService.getStudent()
+                                .then(function (result) {
+                                    $rootScope.studentData = result.data;
+                                })
+                        })
+                }
+                $rootScope.studentEdit = function (event) {
+                    id1 = event.target.id;
+                    $scope.id = id1.slice(1);
+                    studentFetchService.getStudentDataForEdit($scope.id)
+                        .then(function (result) {
+                            console.log(result.data)
+                            $scope.name = result.data[0].name
+                            $scope.Age = result.data[0].age
+                            $scope.rollno = result.data[0].rollNo
+                            if (result.data[0].isMale == true) {
+                                $scope.male = true;
+                            } else {
+                                $scope.female = true;
+                            }
+                            $scope.email = result.data[0].email
+                            $scope.date = new Date(result.data[0].date)
+                            $rootScope.editModeOn = true;
+
+                        })
+                }
+                $scope.EditStudentAct = function () {
+                    var name1 = $scope.name;
+                    var Age1 = $scope.Age;
+                    var rollno1 = $scope.rollno;
+                    var ismale1 = $scope.ismale;
+                    var email1 = $scope.email;
+                    var date = $scope.date;
+                    var id2 = $scope.id;
+                    $scope.name = null
+                    $scope.Age = null
+                    $scope.rollno = null
+                    $scope.ismale = null
+                    $scope.email = null
+                    $scope.date = null;
+                    $rootScope.editModeOn = false;
+
+                    studentFetchService.editStudentData(id2, name1, rollno1, Age1, ismale1, email1, date)
+                        .then(function (result) {
+                            console.log(result)
+                            $scope.result = result;
+                            studentFetchService.getStudent()
+                                .then(function (result) {
+                                    $rootScope.studentData = result.data
+                                })
+                        })
+
+
+                }
+            })
+    </script>
+
+</body>

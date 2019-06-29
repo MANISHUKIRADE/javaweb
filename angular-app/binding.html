@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+
+<head>
+    <title>Binding</title>
+</head>
+
+<body ng-app="bindingApp" ng-controller="bindingcontroller">
+    <div ng-controller="bindingcontroller">
+        Oneway
+        <p>{{student.fname}}</p>
+        <p>{{student.lname}}</p>
+        
+        <br> <br> TwoWay<br><br>
+        Enter fName : <input type="text" ng-model="student.fname" style="width:250px" /><br>
+        Enter fName : <input type="text" ng-model="student.lname" style="width:250px" />
+        <p>
+            <p>{{student.fname}}</p>
+            <p>{{student.lname}}</p>
+            
+
+        </p>
+<br><br>OneTime
+        <p>{{::student.fname}}</p>
+        <p>{{::student.lname}}</p>
+        
+
+
+        <br><br>
+
+    </div>
+
+    <script src="angular.js"></script>
+    <script src="binding-min.js">
+        /// <reference path="angular.js" />
+       
+            
+    </script>
+</body>

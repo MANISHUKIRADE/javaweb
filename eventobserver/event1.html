@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+
+<head>
+    <title>Source To Listner</title>
+</head>
+
+<body>
+    <button id="mybutton">Click for Lisners to listen</button>
+    <script>
+
+
+        (function myFunction() {
+            var button = document.querySelector("#mybutton");
+            button.addEventListener("click", function f1() {
+                console.log("funtion f1");
+                button.addEventListener("click", function f2() {
+                    console.log("function 2");
+                })
+            })
+
+        })();
+    </script>
+</body>

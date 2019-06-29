@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<head>
+    <title> AJAX JQuery</title>
+</head>
+<body>
+    <h1 style="text-align: center"> Click The Button For Get Content</h1><br>
+    <div id="mytext"></div>
+    <br>
+   <button style="text-align: center;" id="mybutton">Click</button>
+   <script src="jquery.js"></script>
+   <script >
+       $(document).ready(function(){
+           $("#mybutton").click(function(){
+               $.ajax({url:"mytext.txt",success:function(result,status,xhr){
+                   $("#mytext").html(result);
+                   console.log(xhr)
+                   
+                   console.log(status)
+               }})
+           })
+       })
+   </script>
+</body>

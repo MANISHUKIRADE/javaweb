@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+
+<head>
+    <title>InputStyle</title>
+</head>
+
+<body ng-app="pageStylechanger" ng-style="pageStyle">
+    <div ng-controller="changestyle">
+        Text:<input type="text" ng-model="inputtext"> FontSize:<input type="text" ng-model="fontsize"
+            ng-change="changeFont()"> BackgroundColor: <select ng-model="color" ng-change="changeFunction()" ng-options="obj.value as obj.name for obj in colors"></select>
+
+        <div ng-style="fontStyle">
+            {{inputtext}}
+        </div>
+
+    </div>
+
+    <script src="angular.js"></script>
+    <script>
+        angular.module("pageStylechanger", [])
+            .controller("changestyle", function ($scope,$rootScope) {
+                $rootScope.colors = [{
+                    "name": "red",
+                    "value": "#DE5435"
+                }, {
+                    "name": "blue",
+                    "value": "#35DEC4"
+                }, {
+                    "name": "green",
+                    "value": "#35DE75"
+                }];
+                $scope.color = "#DE5435"
+                $scope.fontsize=0;
+                $scope.inputtext;
+                $scope.fontStyle = {
+                    "font-silze": $scope.fontsize
+                }
+                $scope.changeFont = function () {
+                    $scope.fontStyle = {
+                        "font-size": $scope.fontsize
+                    }
+                }
+                $rootScope.pageStyle = {
+                    "background-color": $scope.color,
+                }
+                $scope.changeFunction = function () {
+                    $rootScope.pageStyle = {
+                        "background-color": $scope.color,
+                    }
+                }
+
+            })
+    </script>
+</body>

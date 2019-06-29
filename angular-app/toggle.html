@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+
+<head>
+    <title>ToggleSwitch</title>
+</head>
+<style>
+    .image {
+        background-image: url("IMG-20190214-WA0123.jpg")
+    }
+</style>
+
+<body ng-app="toggleapp" ng-controller="toggleswitchonoff" class="image">
+    <div id=imageback>
+        <button ng-click="toggleswitch()">Click!</button>
+        
+
+    </div>
+</body>
+<script src="angular.js"></script>
+<script>
+    toggleswitchbut = false;
+    toggleswitchbut2 = false;
+    /// <reference path="angular.js" />
+    angular.module("toggleapp", [])
+        .controller("toggleswitchonoff", function ($scope) {
+            $scope.toggleswitch = false
+        
+            $scope.toggleswitch = function () {
+                    if (toggleswitchbut == true) {
+                        toggleswitchbut = false;
+                        var removeImageClass = angular.element(document.querySelector("body"));
+                        removeImageClass.addClass('image');
+                    } else {
+                        var removeImageClass = angular.element(document.querySelector("body"));
+                        removeImageClass.removeClass('image');
+                        toggleswitchbut = true;
+                    }
+                }
+                
+        })
+</script>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<head>
+    <title>CallBacks</title>
+</head>
+<body>
+    <script>
+        (function(){
+        function getData(callback){
+            console.log("Getting data");
+            console.log("taking some time");
+            var r = Math.random(10)*10;
+            if(r>=5){
+                callback({
+                    result:"success"+r
+                })
+
+            }else{
+                callback({
+                    error:'number is less than 5'
+                })
+
+            }
+        
+                
+        }
+        getData(handleResponcedata);
+
+        function handleResponcedata(data){
+            console.log(data);
+            console.log("Display data view");
+            if(data.error){
+                console.log("error"+data.error);
+            }
+            else
+            console.log("result found"+data.result)
+
+        }
+        })();
+// annonomously do
+        
+
+
+    </script>
+</body>

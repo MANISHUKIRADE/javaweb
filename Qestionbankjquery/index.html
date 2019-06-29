@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+
+<head>
+    <title>
+        Question Bank
+    </title>
+    <style type="text/css">
+        .wrapper {
+            text-align: center;
+            background: navy;
+        }
+
+        .wrapage {
+            display: block;
+            position: relative;
+            border-style: groove;
+            border-width: 2px;
+            color: blue;
+            border-color: blue;
+
+
+        }
+
+        .container {
+            display: table;
+            position: absolute;
+            top: 200px;
+            left: 350px;
+            color: blue;
+
+
+
+            align-content: center;
+            padding-left: 20px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            font-size: 22px;
+
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+
+        .textWrapper {
+            text-align: center;
+            color: mediumblue;
+            font-size: 25px;
+        }
+
+        .Qestion {
+            display: block;
+            position: relative;
+            text-align: center;
+            top: 0;
+        }
+
+        label {
+            display: block;
+            padding: 2px 0;
+        }
+
+        .Option {
+            display: block;
+            position: relative;
+            text-align: center;
+            top: 150px;
+        }
+    </style>
+</head>
+
+
+<body>
+
+    <div class="wrapage">
+        <div class="wrapper">
+
+            <button class="startbutton">Start</button>
+
+
+
+
+
+        </div>
+        <div class="outer-div"></div>
+        <div qattempt> </div><br>
+        <div id="attempt" style="text-align: center  ;"></div>
+
+        <div id="correct" style="text-align: center  ;"></div><br>
+        <div id="fail" style="text-align: center  ;"></div><br>
+        <div id="unattempt" style="text-align: center  ;"></div><br>
+
+        <div class="textWrapper">
+
+            <div class="Qestion">
+                <p id="qest"></p>
+
+            </div>
+
+        </div>
+        <div id="option" class="container"></div>
+        <button id="nextbt" style="position: relative;  left:500px; top: 200px;">Next</button>
+        <div id="chartContainer" style="height: 300px; width: 100%;"></div>
+    </div>
+</body>
+<script src="questionbank.js"></script>
+<script src="jquery.js"></script>
+<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+<script>
+    $(document).ready(function () {
+        var randomno = [];
+        var numberepeater = true;
+        var index = 0;
+        var correct = 0;
+        while (randomno.length != 5) {
+
+            generated_random_number = Math.floor(((Math.random() * 100) % 10));
+            if (randomno.length == 0) {
+                randomno.push(generated_random_number)
+            }
+            numberepeater = check(generated_random_number);
+            if (numberepeater == true) {
+                randomno.push(generated_random_number)
+                index++
+            }
+            console.log(randomno);
+
+        }
+
+
+        function check(generated_random_number) {
+            numberepeater = true;
+            for (iterator = 0; iterator <= randomno.length; iterator++) {
+                if (randomno[iterator] == generated_random_number) {
+                    numberepeater = false;
+                }
+            }
+            return numberepeater;
+
+        }
+
+        console.log(randomno);
+
+
+        $(".startbutton").click(function () {
+            $(".startbutton").remove();
+
+            var questionno = randomno.pop()
+            var stringqes = Question[questionno].qestion
+            $("#qest").append(stringqes);
+            var option = (Question[questionno].options).split(",");
+            var string = "<label><input id=myradio type=radio name=answer value=A>" + option[0] + "</label><label><input type=radio name=answer value=B>" + option[1] + "</label><label><input type=radio name=answer value=C>" + option[2] + "</label><label><input type=radio name=answer value=D >" + option[3] + " </label>"
+
+            $("#option").append(string);
+            $("#nextbt").click(function () {
+                var radioValue = $("input[name='answer']:checked").val();
+
+                if (radioValue == Question[questionno].answer) {
+                    correct++;
+                }
+                console.log(correct);
+                console.log(randomno)
+                if (randomno.length != 0) {
+                    questionno = randomno.pop()
+                    stringqes = Question[questionno].qestion
+                    $("#qest").empty();
+                    $("#qest").append(stringqes);
+                    option = (Question[questionno].options).split(",");
+                    string = "<label><input id=myradio type=radio name=answer value=A>" + option[0] + "</label><label><input type=radio name=answer value=B>" + option[1] + "</label><label><input type=radio name=answer value=C>" + option[2] + "</label><label><input type=radio name=answer value=D >" + option[3] + " </label>"
+                    $("#option").empty();
+                    $("#option").append(string);
+                } else {
+                    $("#qest").empty();
+                    $("#option").empty();
+                    $("#correct").append("Correct answer " + correct)
+                    $("#fail").append("passing % are  " + (correct / 5) * 100)
+                    $("#nextbt").remove();
+
+
+
+                    var chart = new CanvasJS.Chart("chartContainer", {
+                        animationEnabled: true,
+                        title: {
+                            text: "Result over view"
+                        },
+                        data: [{
+                            type: "pie",
+                            startAngle: 240,
+                            yValueFormatString: "##0.00\"%\"",
+                            indexLabel: "{label} {y}",
+                            dataPoints: [
+                                { y: (correct / 5) * 100, label: "Pass" },
+                                { y: ((5 - correct) / 5) * 100, label: "Fail" },
+
+
+                            ]
+                        }]
+                    })
+                    chart.render();
+
+
+
+
+                }
+
+            })
+
+        })
+    })
+</script>

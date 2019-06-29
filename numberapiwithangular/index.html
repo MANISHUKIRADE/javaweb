@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+
+<head>
+    <title>NumberApiAngular</title>
+    <style>
+        .loader {
+            border: 16px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 16px solid #3498db;
+            width: 3px;
+            height: 3px;
+            -webkit-animation: spin 2s linear infinite;
+            animation: spin 2s linear infinite;
+        }
+
+        @-webkit-keyframes spin {
+            0% {
+                -webkit-transform: rotate(0deg);
+            }
+
+            100% {
+                -webkit-transform: rotate(360deg);
+            }
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+
+<body ng-app="numberapi">
+    <div ng-controller="numberController">
+        Enter The Number:<input type="number" ng-model="number">
+        <button ng-click="addNumber()">Search</button><br><br><br>
+        <div class="loader" ng-hide="sendrequest"></div>
+        <div ng-repeat="results in numberResultArray">{{results.result | captalize }}
+            <br>
+        </div>
+    </div>
+    <script src="angular.js"></script>
+    <script>
+        angular.module("numberapi", [])
+            .filter("captalize", function () {
+                return function (sentence) {
+                    var returnsen = "";
+                    var words = sentence.split(" ");
+                    for (index = 0; index < words.length; index++) {
+                        word = words[index];
+                        word = word[0].toUpperCase() + word.slice(1)
+                        returnsen = returnsen + " " + word;
+                    }
+                    return returnsen;
+
+                }
+            })
+            .controller("numberController", ['$scope', '$http', '$timeout',function ($scope, $http, $timeout) {
+                $scope.numberResultArray = [];
+                $scope.number;
+                $scope.sendrequest = true;
+                $scope.addNumber = function () {
+                    $scope.sendrequest = false;
+                    var storenumber = $scope.number;
+                    if (storenumber != null) {
+                        $timeout(function () {
+                            $http({
+                                method: 'GET',
+                                url: 'http://numbersapi.com/' + storenumber
+                            }).then(function success(response) {
+                                $scope.numberResultArray.push({
+                                    number: storenumber,
+                                    result: response.data,
+                                })
+                            }, function error(response) {
+                                console.log(response)
+                            });
+
+                            $scope.sendrequest = true;
+                        }, 3000)
+
+                        console.log($scope.numberResultArray);
+                        $scope.number = null;
+                    }else{
+                        $scope.sendrequest = true;
+                    }
+                }
+            }]);
+    </script>
+</body>

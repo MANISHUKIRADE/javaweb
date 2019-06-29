@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+
+<head>
+    <title>ShopingCart</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+</head>
+
+<body ng-app="shoppingCart" style="background-color:plum">
+    <div class="container">
+        <div class="jumbotron text-center h1 " style="background-color: rosybrown; color: purple;">ShoppingCart.com
+        </div>
+        <div ng-controller="shopingcartController">
+            <div class="well" style="background-color:pink"> Select Product: <select ng-model="selectedProduct">
+                    <option ng-repeat="item in items " value="{{item.name}}">{{item.name}}</option>
+                </select>
+                Add Quantity: <input type="number" min="1" max="100" ng-model="quantity">
+                <button ng-click="addToCart()" class="btn btn-md btn-success">Add Product</button>
+            </div>
+
+
+            <table class=" table table-striped table-bordered table-hover table-condensed">
+                <thead>
+                    <td>Product Name</td>
+                    <td>ProductPrice</td>
+                    <td>ProductQuantity</td>
+                    <td>Delete</td>
+
+                </thead>
+                <tbody>
+                    <tr ng-repeat="product in cart">
+                        <td>{{product.name}}</td>
+                        <td>{{product.price}}</td>
+                        <td>{{product.quantity}}</td>
+                        <td><button id="{{product.name}}" ng-click="deleteProduct($event)"
+                                class="btn btn-md btn-danger">Delete</button> </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script src="angular.js"></script>
+    <script>
+        angular.module("shoppingCart", [])
+            .controller("shopingcartController", function ($scope, $rootScope) {
+                $scope.items = [{
+                        name: "iphone5",
+                        price: 100000,
+                        quantity: 0,
+
+                    }, {
+                        name: "samsungj7",
+                        price: 10000,
+                        quantity: 0,
+                    },
+                    {
+                        name: "samsungGalaxys7",
+                        price: 90000,
+                        quantity: 0,
+
+                    }
+                ];
+                $rootScope.cart = [];
+
+                $scope.addToCart = function () {
+                    var product = $scope.selectedProduct;
+                    var quantity = $scope.quantity;
+                    if ($rootScope.cart.length == 0) {
+                        for (index = 0; index < $scope.items.length; index++) {
+                            if ($scope.items[index].name == product) {
+                                var tempproduct = {
+                                    name: product,
+                                    price: $scope.items[index].price,
+                                    quantity: quantity
+                                }
+                                $rootScope.cart.push(tempproduct);
+                                break;
+                            }
+                        }
+
+
+                    } else {
+                        for (index = 0; index < $scope.cart.length; index++) {
+                            if ($scope.cart[index].name == product) {
+                                $scope.cart[index].quantity = Number($scope.cart[index].quantity) + Number(
+                                    quantity)
+                                break;
+                            } else if (matchflag==false;) {
+                                for (index = 0; index < $scope.items.length; index++) {
+                                    if ($scope.items[index].name == product) {
+                                        var tempproduct = {
+                                            name: product,
+                                            price: $scope.items[index].price,
+                                            quantity: quantity
+                                        }
+                                        $rootScope.cart.push(tempproduct);
+                                        break;
+                                    }
+                                }
+                            }
+
+                        }
+                    }
+
+                    $scope.selectedProduct = null;
+                    $scope.quantity = null;
+
+                }
+
+                $scope.deleteProduct = function (event) {
+                    name = event.target.id;
+                    for (index = 0; index < $rootScope.cart.length; index++) {
+                        if ($rootScope.cart[index].name == name) {
+                            $rootScope.cart.splice(index, 1);
+                        }
+                    }
+                }
+            })
+    </script>
+</body>

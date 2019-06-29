@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+
+<body ng-app="apiapp">
+    <div ng-controller="apiController">
+        Enter Number:<input type="number" ng-model="getnumber">
+
+
+        <button ng-click="search()">Search</button>
+
+
+        <div ng-hide="isHidden" class="loader"></div>
+
+
+
+
+
+        <p ng-repeat="result in resultarray">{{result}}</p>
+    </div>
+    <style>
+        .loader {
+            border: 16px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 16px solid #3498db;
+            width: 3px;
+            height: 3px;
+            -webkit-animation: spin 2s linear infinite;
+            animation: spin 2s linear infinite;
+        }
+
+        @-webkit-keyframes spin {
+            0% {
+                -webkit-transform: rotate(0deg);
+            }
+
+            100% {
+                -webkit-transform: rotate(360deg);
+            }
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+    <script src="angular.js"></script>
+    <script>
+        angular.module('apiapp', [])
+            .factory('stringApiservice', ['$log', '$q', '$rootScope', '$timeout', '$http', function ($log, $q,
+                $rootScope, $timeout, $http) {
+                var factoryobject = {};
+                $rootScope.isHidden = true;
+                var resultarray = [];
+                factoryobject.getfact = function (number) {
+
+                    return $q(function (resolve, reject) {
+                        $rootScope.isHidden = false;
+                        $timeout(function () {
+
+                            $http({
+                                    method: 'GET',
+                                    url: 'http://numbersapi.com/' + number
+
+
+                                }).then(function success(response) {
+                                    console.log(response.data)
+                                    resultarray.push(response.data)
+                                    resolve(resultarray)
+
+                                }),
+                                function error(response) {
+                                    reject(response)
+                                };
+                            $rootScope.isHidden = true;
+                        }, 3000)
+                    })
+                }
+                return factoryobject;
+            }]).controller('apiController', ['$scope', 'stringApiservice', function ($scope, stringApiservice) {
+
+
+                $scope.search = function () {
+
+                    stringApiservice.getfact($scope.getnumber).then(function (results) {
+                        $scope.resultarray = results
+                    }).catch(function (errror) {
+                        console.log(error)
+                    })
+
+
+
+                }
+            }])
+    </script>
+</body>
+
+</html>

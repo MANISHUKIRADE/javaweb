@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+
+<head>
+    <title>ToggleSwitch</title>
+</head>
+<style>
+    .image {
+        background-image: url("IMG-20190214-WA0123.jpg")
+    }
+</style>
+
+<body ng-app>
+    <div ng-init="imageon=true;" >
+        <div>
+        <button ng-click="imageon=!imageon">Click!</button>
+    </div>
+      <img ng-show="imageon" src="IMG-20190214-WA0123.jpg">
+    </div>
+</body>
+<script src="angular.js"></script>
+<script>
+    /// <reference path="angular.js" />
+   
+</script>

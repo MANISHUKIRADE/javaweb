@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+    <head><title> Event 2 Listner</title></head>
+<body>
+    <button id="button">HelloButton</button>
+    <button id="exitbutton" >ExitButton</button>
+
+    <script>
+        (function( ){
+            var button = document.querySelector("#button");
+            var exitbutton = document.querySelector("#exitbutton");
+            button.addEventListener("click",listner);
+            exitbutton.addEventListener("click",listner) ;
+            
+            function listner(){
+                if(document.queryCommandValue("#button")==this){
+                    alert("hello");
+                    return;
+
+                }
+                if(document.querySelector("#exitbutton")==this)
+                window.close();
+                return;
+            }
+
+            
+
+        })();
+
+
+     /* var  button= document.querySelector("#hellobutton");
+      button.addEventListener("click"function Hello(){
+          f1();
+
+      })();
+      function f1(){
+          console.log("Listener")
+      }
+      var ebutton =document.addEventListener("#exit");
+      ebutton.addEventListener("click",function Exit(){
+          this.window.close();
+      })
+
+*/
+      
+    </script>
+</body>

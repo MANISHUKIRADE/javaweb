@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+
+<head>
+    <title>KeyBoardInput</title>
+</head>
+
+<body>
+    Text: <input type="text" id="myinput" onkeydown="myfunction(event)"> fontSize:<input type="text"
+        oninput="fontSize()" id="myfont" style="right:150px;">
+         backgroundColor: <select id="myselect" onchange="colorChange()">
+        <option value="#9EE6F8">blue</option>
+        <option value="#7EF374">green</option>
+        <option value="#FAAE8F">red</option>
+    </select>
+
+
+    FontColor:<select id="myfontcolor" onchange="fontColorChange()">
+            <option value="blue">blue</option>
+            <option value="green">green</option>
+            <option value="red">red</option>
+        </select>
+    <div id="mytext">
+
+    </div>
+    
+    <br id="0">
+    <a href="Breakline.html">breakline</a>
+    
+    <script>
+
+
+
+        var mystring = new String();
+        function myfunction(event) {
+
+            if ((event.keyCode >= 64) && (event.keyCode <= 90)||(event.key==13)) {
+                character = event.key;
+
+
+                mystring = mystring.concat(character);
+            }
+            var style1 = document.getElementById("myfont").value;
+            var color = document.getElementById("myselect").value;
+       var   fontcolor= document.getElementById("myfontcolor").value;
+
+            document.getElementById("mytext").style.backgroundColor = color;
+            document.getElementById("mytext").style.fontSize = style1;
+            document.getElementById("mytext").style.color= fontcolor;
+
+            document.getElementById("mytext").innerHTML = mystring;
+
+
+            if (event.keyCode == 8) {
+                mystring = mystring.slice(0, mystring.length - 1);
+
+
+            }
+            document.getElementById("mytext").style.backgroundColor = color;
+            document.getElementById("mytext").style.fontSize = style1;
+            document.getElementById("mytext").innerHTML = mystring;
+
+            if (event.keyCode == 32) {
+                mystring = mystring.concat(" ");
+            }
+        
+            if (event.keyCode == 13) {
+                mystring= mystring.concat("<br>")
+                document.getElementById("mytext").innerHTML =  mystring;
+
+            }
+
+
+
+
+
+
+
+        }
+        function fontSize() {
+            var style1 = document.getElementById("myfont").value;
+            document.getElementById("mytext").style.fontSize = style1;
+
+
+
+
+
+        }
+
+        function colorChange() {
+
+            document.getElementById("mytext").style.backgroundColor = document.getElementById("myselect").value;
+        }
+
+        function myTextAreaFunction(event) {
+            var stringtextarea = document.getElementById("MyTextArea").value;
+            document.getElementById("myTextAraeoutput").innerHTML = stringtextarea;
+            var enterkey =0
+            if (event.keyCode == 13) {
+                document.getElementById("0").innerHTML = "<br id=enterkey>"
+
+            }
+
+        }
+
+        function fontColorChange(){
+            document.getElementById("mytext").style.color = document.getElementById("myfontcolor").value;
+        }
+
+    </script>
+</body>

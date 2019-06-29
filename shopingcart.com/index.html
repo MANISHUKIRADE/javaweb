@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+
+<head>
+    <title>Shopping Cart </title>
+</head>
+
+<body style="background-color: #E0FFFF;">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <div class="jumbotron text-center h1" style="color: #9400D3; font-size: 50px; background-color: #ADD8E6;">
+        ShoppingCart.com</div>
+    <div class="well " style="font-size: 20px;  background-color: #ADD8E6;">
+        <div class="form-group form-horizontal">
+            <label class="col-xs-3 control-label"><strong></strong>&nbsp;Select Item</label>
+            <div class="d-flex p-2">
+                <select style="width:auto;" id="myselect">
+                    <option selected="selected" value="not selected">Select Product
+
+                    </option>
+                </select>
+                <label class=" control-label"><strong></strong>&nbsp;Quantity</label>
+                <input type="number" id="quant" min="1"> <button id="mybut" class="btn btn-md btn-success "
+                    onclick="myFunction()">Add</button>
+
+            </div>
+        </div>
+
+    </div>
+    <div style="display: inline-table;font-size: 20px;  background-color: #ADD8E6;"
+        class="container col-lg-6 col-lg-offset-3 text-center">
+        <div class="well text-center h4">Products You Selected</div>
+        <div class="table-responsive">
+            <table id="mytable" class="table table-striped table-bordered table-hover table-condensed">
+
+            </table>
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12" style="font-size: 20px;  " id="totalcost"></div>
+
+    </div>
+</body>
+
+</html>
+
+<script src="jquery.js"></script>
+<script>
+    var items = [{
+            name: "iphone5",
+            price: 100000,
+            quantity: 0,
+
+        }, {
+            name: "samsungj7",
+            price: 10000,
+            quantity: 0,
+        },
+        {
+            name: "samsungGalaxys7",
+            price: 90000,
+            quantity: 0,
+
+        }
+    ];
+
+    var productarry = [];
+    var productlength = 0;
+    $(document).ready(function () {
+
+        var string = "";
+        for (index = 0; index < items.length; index++) {
+            string = string + "<option value =" + items[index].name + ">" + items[index].name + "</option> "
+        }
+
+        $("#myselect").append(string);
+
+
+
+    })
+
+    function myFunction() {
+        var selectvalue = document.getElementById("myselect").value;
+        var price;
+        var quanitity = 0;
+        var quanitity = $("#quant").val()
+        $("#quant").val(null)
+        if (selectvalue == "not selected") {
+            alert("you are not selected the any product")
+        } else {
+            var findflag = 0;
+            for (index = 0; index < productarry.length; index++) {
+                if (productarry[index].name == selectvalue) {
+                    productarry[index].quantity = Number(productarry[index].quantity) + Number(quanitity);
+                    findflag = 1;
+                    break;
+                }
+            }
+            if (findflag == 0) {
+                var produvtname = selectvalue;
+                for (index = 0; index < items.length; index++) {
+                    if (selectvalue == items[index].name) {
+                        var productprice = items[index].price
+                        productarry[productlength] = {
+                            name: produvtname,
+                            price: productprice,
+                            quantity: quanitity,
+                        }
+                        productlength++;
+                        break;
+                    }
+                }
+            }
+
+
+        }
+        document.getElementById("myselect").value = "not selected"
+
+        printtable();
+
+    }
+
+
+    function printtable() {
+        var totalcost = 0;
+        $("#mytable").empty();
+        $("#totalcost").empty();
+        var string = "<thead><tr><th>Name</th><th>price</th><th>Quantity</th><th>Delete</th></tr></thead> <tbody>"
+        for (index = 0; index < productarry.length; index++) {
+            string = string + "<tr><th>" + productarry[index].name + "</th><th>" + productarry[index].price +
+                "</th><th>" + productarry[index].quantity +
+                "</th><th><button class= 'btn btn-danger' onclick=DeleteProduct(this) id=" +
+                productarry[index].name + " >Delete</button></th></tr>"
+        }
+        string = string + "</tbody>"
+        $("#mytable").append(string);
+        for (index = 0; index < productarry.length; index++) {
+            var totalcost = totalcost + productarry[index].price * productarry[index].quantity;
+        }
+        $("#totalcost").append("<strong>Total Cost of Your Cart is :" + totalcost + "</strong>")
+    }
+
+    function DeleteProduct(button) {
+        name1 = button.id;
+        for (index = 0; index < productarry.length; index++) {
+            if (productarry[index].name == name1) {
+                productarry.splice(index, 1)
+                productlength--;
+                break;
+            }
+            console.log(productarry)
+        }
+        printtable();
+    }
+</script>
+</body>

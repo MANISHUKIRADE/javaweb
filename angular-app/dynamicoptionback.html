@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+
+<head>
+    <title>DynmiOption</title>
+</head>
+
+<body ng-app="backcolour" ng-style="pageStyle">
+    <div ng-controller="colorchangecon">
+        <select ng-model="color" ng-change="changeFunction()" ng-options="obj.value as obj.name for obj in colors"></select>
+    </div>
+    <script src="angular.js"></script>
+    <script src="dynamicoption.min.js">
+        
+    </script>
+</body>

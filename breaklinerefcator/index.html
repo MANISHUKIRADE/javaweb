@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+
+<head>
+    <title>
+        Breakline
+    </title>
+</head>
+
+<body onload="displayarry()">
+    Text: <input type="text" id="myinput" onkeydown="myfunction(event)">
+    <div id="mytext"></div>
+
+</body>
+<script>
+    var inputstring = new String();
+    var arrayforstring = [];
+    if (localStorage.arrayindex) {
+        localStorage.arrayindex = Number(localStorage.arrayindex);
+    } else {
+        localStorage.arrayindex = 0;
+    }
+
+    function myfunction(event) {
+
+        if ((event.keyCode >= 64) && (event.keyCode <= 90) || (event.key == 13)) {
+            character = event.key;
+
+
+
+            inputstring = inputstring.concat(character);
+
+        }
+
+
+
+        //document.getElementById("mytext").innerHTML = mystring;
+
+
+        if (event.keyCode == 8) {
+            inputstring = inputstring.slice(0, inputstring.length - 1);
+
+
+        }
+
+        //document.getElementById("mytext").innerHTML = mystring;
+
+        if (event.keyCode == 32) {
+            inputstring = inputstring.concat(" ");
+
+        }
+
+        if (event.keyCode == 13) {
+            localStorage.setItem("string" + localStorage.arrayindex, inputstring);
+            localStorage.arrayindex = Number(localStorage.arrayindex) + 1;
+
+
+            displayarry();
+            inputstring = inputstring.slice(0, 0);
+            document.getElementById("myinput").value = null;
+        }
+    }
+
+
+    function displayarry() {
+        var printstring = "<p>";
+
+        for (index = 0; index < localStorage.arrayindex; index++) {
+            if (localStorage.getItem("string" + index) != null) {
+                printstring = printstring + "<p id=p" + index + "><button id=" + index + " onclick=deleteFunction(this)>X</button>" + localStorage.getItem("string" + index);
+
+                document.getElementById("mytext").innerHTML = printstring;
+            }
+        }
+
+
+
+
+    }
+
+
+    function deleteFunction(button) {
+        var num = button.id;
+
+        localStorage.removeItem("string" + num)
+
+        displayarry();
+
+
+    }
+    
+
+
+
+</script>

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+
+<head>
+    <title>Blue Ball JQuery</title>
+    <style>
+        .wrapper {
+            text-align: right;
+        }
+
+        .wrap {
+            text-align: left;
+        }
+
+        .button {
+            width: 50px;
+            height: 50px;
+            background: #b6bbb7;
+            margin: 10px;
+            color: #fff;
+            border-radius: 5px;
+            border: none;
+            border-radius: 50%;
+        }
+        .result{
+            text-align: center;
+            color: darkred;
+            background-color: chartreuse;
+            font-size: 200px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <button id="start" style="left: 100px;">Start Game</button>
+    <div class="wrapper">
+        <p id="counter"></p>
+    </div>
+    <div class="wrap">
+        <p id="attemp"></p>
+        <div class="result" id="gameStatus" ></div>
+       
+    </div>
+    
+</body>
+<script src="jquery.js"></script>
+<script>
+    var randomnumber = Math.floor(((Math.random() * 100) % 50 + 1))
+    var attempt = 5;
+    $(document).ready(function () {
+         
+        $("#start").click(function(){
+          $("#start").remove();
+        
+        $("#attemp").append("Attempts  " + attempt)
+
+        function countdown(minutes) {
+            var seconds = 60;
+            var mins = minutes
+            function tick() {
+                $("#counter").empty();
+                current_minutes = mins - 1
+                seconds--;
+                $("#counter").append("timer : " + current_minutes.toString() + ":" + (seconds < 10 ? "0" : "") + String(seconds));
+
+                if (seconds > 0) {
+                    setTimeout(tick, 1000);
+                }
+
+                if (mins > 1) {
+                    countdown(mins - 1);
+
+                }
+
+            }
+            tick();
+        }
+        countdown(1);
+
+        for (ballcount = 0; ballcount < 50; ballcount++) {
+
+            var tempbut = $('<input/>').attr({ type: 'button', id: ballcount + 1, value: ballcount + 1 });
+            tempbut.addClass("button");
+
+
+            $(tempbut).click(function () {
+               var winflag=0;
+                if (randomnumber == this.id) {
+                    $(this).css('background-color', 'blue');
+                    for (ball = 1; ball <= 50; ball++) {
+                        $("#" + ball).fadeToggle(1000)
+                    }
+                    $("#gameStatus").append("Winner")
+                    $("#counter").remove();
+                    $("#attemp").remove();
+                 winflag=1;
+                }
+                if ((randomnumber < this.id)&&(winflag==0)) {
+                    $(this).css('background-color', 'red');
+                }
+                if ((randomnumber > this.id)&&(winflag==0)) {
+                    $(this).css('background-color', 'green');
+                }
+                attempt--;
+                $("#attemp").empty();
+                $("#attemp").append("Attempts  " + attempt)
+                if ((attempt == 0)&&(randomnumber != this.id)) {
+                    var tempbut = $(":button")
+                    console.log(tempbut);
+                    for (ball = 1; ball <= 50; ball++) {
+                        $("#" + ball).fadeToggle(1000)
+                    }
+                    $("#counter").remove();
+                    $("#attemp").remove();
+                    $("#gameStatus").append("Game Over").css()
+                 }
+
+            })
+
+
+            $("body").append(tempbut);
+
+        }
+    })
+    })
+</script>

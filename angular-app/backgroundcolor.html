@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+
+<head>
+    <title>BackGroundColorChange</title>
+</head>
+
+<body ng-app="colorchange" ng-style="pageStyle">
+    <div ng-controller= "colourChangeController">
+        <select ng-model="color" ng-change="changeFunction()" >
+            <option value="red">Red</option>
+            <option value="blue">Blue</option>
+            <option value="green"> Green</option>
+        </select>
+        </div>
+        <script src="angular.js"></script>
+        <script src="background-min.js">
+           
+        </script>
+</body>

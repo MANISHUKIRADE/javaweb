@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+
+<head>
+    <title>This is Clouser</title>
+</head>
+
+<body>Clouser
+    <script>
+        function Customer(id, fname, lname) {
+            this.id = id;
+            this.fname = fname;
+            this.lname = lname;
+            this.getDetails = function () {
+                return ("id" + this.id + " fname" + this.fname + " lname " + this.lname);
+            }
+
+        }
+        var c1 = new Customer(101, "manish", "ukirade");
+        console.log(c1.getDetails());
+        console.log(c1);
+        var c2 = new Customer(102, "ratnesh", "dubey");
+        console.log(c2.getDetails());
+        console.log(c2);
+    </script>
+    <script>
+
+
+        function Student() {
+            var _rollno;
+            var _name;
+            console.log("this");
+            this.setRollNo = function (rollno) {
+                if (rollno > 0) {
+                    _rollno = rollno;
+                }
+            }
+            this.setName = function (setName) {
+                if (name.lenght > 1) {
+                    _name = name;
+                }
+            }
+
+            this.getRollNo = function () {
+
+
+                return _rollno;
+            }
+            this.getName = function () {
+                return _name;
+            }
+        }
+        var s1 = new Student();
+        var s2 = new Student();
+        s1.setRollNo(101);
+        s1.getName();
+        s1.setName("manish student");
+        s2.setName("Ratnesh student");
+        s2.setRollNo(11);
+        console.log(s1);
+        console.log(s2);
+        var s3 = Student();
+
+
+
+
+
+    </script>
+
+</body>

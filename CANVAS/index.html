@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<head><title>Canvas</title></head>
+<body>
+   
+    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+<script>
+    
+   var chart = new CanvasJS.Chart("chartContainer", {
+                    animationEnabled: true,
+                    title: {
+                        text: "Result over view"
+                    },
+                    data: [{
+                        type: "pie",
+                        startAngle: 240,
+                        yValueFormatString: "##0.00\"%\"",
+                        indexLabel: "{label} {y}",
+                        dataPoints: [
+                            { y: 80,  },
+                            { y: 20,  },
+                            
+
+                        ]
+                    }]
+                })
+               
+
+
+
+
+
+
+
+            
+</script>
+</body>

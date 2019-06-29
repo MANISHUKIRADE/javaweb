@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+
+<head>
+    <title>
+        Numbers Api
+    </title>
+    <style>
+        .loader {
+            border: 16px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 16px solid #3498db;
+            width: 3px;
+            height: 3px;
+            -webkit-animation: spin 2s linear infinite;
+            animation: spin 2s linear infinite;
+        }
+
+        @-webkit-keyframes spin {
+            0% {
+                -webkit-transform: rotate(0deg);
+            }
+
+            100% {
+                -webkit-transform: rotate(360deg);
+            }
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <h1 style="text-align: center">Number Api</h1><br><br>
+    Enter The Number:<input type="number" id="mynumber">
+    <div id="myloader"> </div><button id="search">Search</button>
+
+    <div id="searchresult"></div>
+</body>
+<script src="jquery.js"></script>
+<script>
+    $(document).ready(function () {
+        var index = 1;
+        var result1;
+        $("#search").click(function () {
+
+            if (($("#mynumber").val() != null) && ($("#mynumber").val() != "")) {
+                $("#myloader").addClass("loader");
+                $("#search").hide();
+                var num = $("#mynumber").val();
+                $("#mynumber").val(null);
+                var result1;
+                setTimeout(function () {
+                    result1 = $.get("http://numbersapi.com/" + num, function (result) {
+
+                        $(result1).promise().progress(function () {
+                            console.log("on progress")
+                        })
+                        $(result1).promise().done(function () {
+                            printmysearch(result);
+                            $("#myloader").removeClass("loader");
+                            $("#search").show();
+                            index++;
+                        })
+
+                        $(result1).promise().fail(function () {
+                            console.log("fail to connect")
+                        })
+
+
+                    })
+
+                }, 3000)
+
+
+
+            }
+        })
+
+        function printmysearch(result) {
+
+            $("#searchresult").append("<br>" + index + ".  " + result + "<br>");
+
+        }
+
+    })
+</script>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+
+<head>
+    <title>STudentLoadEventArrray</title>
+</head>
+
+<body>
+    <div ng-app="eventapp" ng-controller="maincontroller">
+        <button ng-click="loadData()">Load</button>
+        <div ng-repeat="student in students">
+            <p>{{student.fname}}</p>
+            <p>{{student.lname}}</p>
+            <p ng-style="{'background': '{{student.CGPA | cgpaFilter}}'}"> {{student.CGPA}} </p>
+            <img ng-src="{{student.picture}}" style="height: 40px; width: 40px">
+        </div>
+    </div>
+    <script src="angular.js"></script>
+    <script>
+        angular.module("eventapp", [])
+            .filter("cgpaFilter", function () {
+                return function (CGPA) {
+                    if ((CGPA >= 7) && (CGPA < 8)) {
+                        return 'green';
+                    } else if (CGPA < 7) {
+                        return 'red';
+                    } else if (CGPA > 8) {
+                        return 'yellow';
+                    }
+                }
+            })
+            .controller("maincontroller", function ($scope, $rootScope) {
+
+
+
+
+                $scope.loadData = function () {
+                    $scope.students = [{
+                        "fname": "Manish",
+                        "lname": "Ukirde",
+                        "CGPA": 6.54,
+                        "picture": "IMG-20190214-WA0123.jpg"
+                    }, {
+                        "fname": "Ratnesh",
+                        "lname": "Dubey",
+                        "CGPA": 8.54,
+                        "picture": "IMG-20190214-WA0123.jpg"
+
+                    }, {
+                        "fname": "pryank",
+                        "lname": "kain",
+                        "CGPA": 7.54,
+                        "picture": "IMG-20190214-WA0123.jpg"
+                    }]
+
+                }
+            });
+    </script>
+</body>

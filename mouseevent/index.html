@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<head><title>Mouse Events</title>
+</head>
+<body>
+    <p id="demo">Click!!!!</p><br><br>
+    <button id="Button1" onclick="getButtonLocation(event)">My Button Click Here </button><br><br>
+    <p id="coordi"></p><p id="buttontext"></p>
+
+
+
+
+    <script>
+        document.getElementById("demo").addEventListener("mousedown",Mouseonclick);
+        document.getElementById("demo").addEventListener("mouseup",MouseNotonClick);
+
+       function Mouseonclick(){
+           document.getElementById("demo").innerHTML ="Mouse on  click"
+       }
+
+       function MouseNotonClick(){
+           document.getElementById("demo").innerHTML = "Mouse is Not on click"
+       }
+    </script>
+
+    <script>
+      function  getButtonLocation(event){
+          var x= event.clientX;
+          var y = event.clientY;
+          document.getElementById("coordi").innerHTML=("The X co-ordinate "+x+" The Y co-Ordinate is "+y); 
+          var text= document.getElementById("Button1").firstChild.nodeValue;
+          document.getElementById("buttontext").innerHTML=text;
+
+
+
+      }
+    </script>
+
+</body>

@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+
+<head>
+    <title>
+        Customer Form
+    </title>
+
+    <style>
+        .center {
+            margin: auto;
+            text-align: center;
+            width: 60%;
+            border: 3px solid #73AD31;
+            padding: 10px;
+            color: darkred
+        }
+
+        .tablecenter {
+            margin: auto;
+            text-align: center;
+            color: darkred
+        }
+
+        table,
+        th,
+        tr {
+            text-align: center;
+            border: 1px ridge orangered;
+
+        }
+    </style>
+</head>
+
+<body>
+    <div class="center">
+        <h1>Customer Form</h1>
+
+        Name: <input type="text" id="nameinput"><br>
+        <p> Gender: <input type="radio" id="male" name="gender" value="Male">Male <input type="radio" name="gender"
+                id="female" value="Female">female<br></p>
+        <br>Age: <input type="text" id="age"><br><br>
+        Credit Card : <select id="creditcard">
+            <option value="VISA">VISA</option>
+            <option value="MASTER">MASTER</option>
+            <option value="AMEX">AMEX</option>
+        </select><br><br>
+        <button id="mybutton" onclick="printTable()">Add Customer</button>
+        <div id="myedits"></div>
+    </div>
+    <div class="tablecenter">
+        <h2>Table</h2>
+        <table id="printtable" class="tablecenter"></table>
+    </div>
+
+
+    <script>
+        var flag = 1;
+        if (localStorage.customerCount) {
+            localStorage.customerCount = Number(localStorage.customerCount)
+        } else {
+            localStorage.customerCount = 0;
+        }
+
+
+        function printTable() {
+            var name = document.getElementById("nameinput");
+            if (name.value.length == 0) {
+                localStorage.setItem("Name" + localStorage.customerCount, "Empty")
+            } else {
+                localStorage.setItem("Name" + localStorage.customerCount, name.value)
+            }
+
+            if (document.getElementById("male").checked == true) {
+                localStorage.setItem("Gender" + localStorage.customerCount, document.getElementById("male").value);
+            } else if (document.getElementById("female").checked == true) {
+                localStorage.setItem("Gender" + localStorage.customerCount, document.getElementById("female").value);
+            } else {
+                localStorage.setItem("Gender" + localStorage.customerCount, null)
+            }
+
+            var age = document.getElementById("age");
+            if (age.value.length == 0) {
+                localStorage.setItem("Age" + localStorage.customerCount, "Empty");
+            } else {
+                localStorage.setItem("Age" + localStorage.customerCount, age.value);
+            }
+
+            var credit = document.getElementById("creditcard").value;
+            if (credit != null) {
+                localStorage.setItem("CreditCard" + localStorage.customerCount, document.getElementById("creditcard").value);
+            } else {
+                localStorage.setItem("CreditCard" + localStorage.customerCount, "empty");
+            }
+
+            if ((localStorage.getItem("Name" + localStorage.customerCount) != "Empty") && (localStorage.getItem("Age" + localStorage.customerCount) != null) && (localStorage.getItem("CreditCard" + localStorage.customerCount) != "empty") && (localStorage.getItem("Gender" + localStorage.customerCount) != null)) {
+
+                localStorage.customerCount = Number(localStorage.customerCount) + 1;
+                prinTablestrint();
+                document.getElementById("nameinput").value = null;
+                document.getElementById("male").checked = false;
+                document.getElementById("female").checked = false;
+                document.getElementById("age").value = null;
+                document.getElementById("creditcard").value = null;
+
+
+
+            }
+
+
+
+        }
+
+
+        function prinTablestrint() {
+            var printString = "<tr><th>Edit</th><th>Delete</th><th>name</th><th>Gender</th><th>Age</th><th>creditCard</th></tr>"
+
+            if (localStorage.customerCount != 0) {
+                for (index = 0; index < localStorage.customerCount; index++) {
+                    if (localStorage.getItem("Name" + index) != null) {
+                        printString = printString + "<tr><th><button id=e" + index + " onClick= Action(this)>Edit</button></th><th><button id=" + index + " onClick= deleteCustomer(this)>X</button></th><th>" + localStorage.getItem("Name" + index) + "</th><th>" + localStorage.getItem("Gender" + index) + "</th><th>" + localStorage.getItem("Age" + index) + "</th><th>" + localStorage.getItem("CreditCard" + index) + "</th></tr>";
+                        document.getElementById("printtable").innerHTML = printString;
+                    }
+                }
+            } else {
+                document.getElementById("printtable").innerHTML = printString;
+            }
+
+        }
+
+        function deleteCustomer(button) {
+            butid = button.id;
+
+            localStorage.removeItem("Name" + butid);
+            localStorage.removeItem("Age" + butid);
+            localStorage.removeItem("Gender" + butid);
+            localStorage.removeItem("CreditCard" + butid);
+            prinTablestrint();
+            localStorage.customerCount = Number(localStorage.customerCount) - 1;
+
+
+
+
+
+        }
+        function editCustomer(button) {
+            butid = button.id;
+            butid = butid.substring(1, butid.length);
+
+
+
+            document.getElementById("nameinput").value = localStorage.getItem("Name" + butid);
+            if (localStorage.getItem("Gender" + butid) == "Male") {
+                document.getElementById("male").checked = true;
+            } else if (localStorage.getItem("Gender" + butid) == "Female") {
+                document.getElementById("female").checked = true;
+            }
+
+
+            document.getElementsByName("gender").value = localStorage.getItem("Name" + butid)
+            document.getElementById("age").value = localStorage.getItem("Age" + butid)
+            document.getElementById("creditcard").value = localStorage.getItem("CreditCard" + butid)
+            document.getElementById("mybutton").disabled = true;
+
+
+            document.getElementById("myedits").innerHTML = "<button id=d" + butid + " onClick=EditDataTable(this)>Edit Customer</button>"
+
+        }
+
+        function EditDataTable(button) {
+            flag = 1;
+            butid = button.id
+            butid = butid.substring(1, butid.length);
+            localStorage.removeItem("Name" + butid);
+            localStorage.removeItem("Age" + butid);
+            localStorage.removeItem("Gender" + butid);
+            localStorage.removeItem("CreditCard" + butid);
+
+
+
+            localStorage.setItem("Name" + butid, document.getElementById("nameinput").value);
+            localStorage.setItem("Age" + butid, document.getElementById("age").value);
+            localStorage.setItem("CreditCard" + butid, document.getElementById("creditcard").value);
+            if (document.getElementById("male").checked == true) {
+                localStorage.setItem("Gender" + butid, document.getElementById("male").value);
+            } else if (document.getElementById("female").checked == true) {
+                localStorage.setItem("Gender" + butid, document.getElementById("female").value);
+            } else {
+                localStorage.setItem("Gender" + butid, null);
+            }
+
+
+
+
+            prinTablestrint();
+            document.getElementById("nameinput").value = null;
+            document.getElementById("male").checked = false;
+            document.getElementById("female").checked = false;
+            document.getElementById("age").value = null;
+            document.getElementById("creditcard").value = null;
+            document.getElementById(button.id).disabled = true;
+            document.getElementById("mybutton").disabled = false;
+
+        }
+        function Action(button) {
+
+            if ((document.getElementById(button.id).innerHTML == "Edit") && (flag == 1)) {
+                editCustomer(button);
+                document.getElementById(button.id).innerHTML = "cancel"
+                flag = 0;
+
+            } else if (document.getElementById(button.id).innerHTML == "cancel") {
+                cancelEdit(button);
+                document.getElementById(button.id).innerHTML = "Edit"
+            }
+        }
+        function cancelEdit(button) {
+            flag = 1;
+            butid = button.id
+            butid = butid.substring(1, butid.length);
+            prinTablestrint();
+            document.getElementById("nameinput").value = null;
+            document.getElementById("male").checked = false;
+            document.getElementById("female").checked = false;
+            document.getElementById("age").value = null;
+            document.getElementById("creditcard").value = null;
+
+            document.getElementById("mybutton").disabled = false;
+            document.getElementById("d" + butid).disabled = true;
+
+
+        }
+
+
+    </script>
+
+</body>

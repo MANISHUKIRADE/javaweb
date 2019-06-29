@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+
+<head>
+    <title>Names add</title>
+</head>
+
+<body>
+    Names<input id="inputname" type="text"><br>
+    <button id="addbutton">Add Name</button>
+    <div id="namesadded">
+
+    </div>
+
+</body>
+<script src="jquery.js"></script>
+<script>
+    var nameVar = [];
+    var length = 0
+    $("document").ready(function () {
+
+        $("#addbutton").click(function () {
+
+            var value1 = $("#inputname").val();
+            nameVar[length] = value1;
+            length++;
+            printArray();
+            $("#inputname").val(null)
+        })
+
+    })
+
+
+
+    function printArray() {
+
+        var string = "<p>"
+        for (index = 0; index < length; index++) {
+
+            string = string + "<p id= names><button id=" + index + " onClick=deleteNames(this) >X</button>" + nameVar[index] + "</p>"
+            document.getElementById("namesadded").innerHTML = string
+
+        }
+    }
+
+
+    function deleteNames(button) {
+        butid = button.id;
+        nameVar.splice(butid, 1);
+        printArray();
+    }
+
+
+
+
+
+
+
+
+
+</script>

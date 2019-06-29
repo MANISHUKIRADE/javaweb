@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+
+<head>
+    <title>STudentLoadEvent</title>
+    <style>
+        .loader {
+            border: 16px solid #f3f3f3;
+            border-radius: 100%;
+            border-top: 16px solid #3498db;
+            width: 120px;
+            height: 120px;
+            -webkit-animation: spin 2s linear infinite;
+            animation: spin 2s linear infinite;
+        }
+
+        @-webkit-keyframes spin {
+            0% {
+                -webkit-transform: rotate(0deg);
+            }
+
+            100% {
+                -webkit-transform: rotate(360deg);
+            }
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+    <div ng-app="eventapp" ng-controller="maincontroller">
+        <div class="loader" ng-hide=spinerIsOff> </div>
+        <div>
+            <p>{{student.fname}}</p>
+            <p>{{student.lname}}</p>
+            <img ng-src="{{student.picture}}" style="height: 90px; width: 90px">
+        </div>
+    </div>
+    <script src="angular.js"></script>
+    <script>
+        angular.module("eventapp", [])
+
+            .controller("maincontroller", function ($scope, $timeout) {
+                $scope.spinerIsOff = false;
+
+
+                $timeout(loadTheData, 2000);
+
+                function loadTheData() {
+                    $scope.spinerIsOff = true;
+                    $scope.student = {
+                        fname: "Manish",
+                        lname: "Ukirde",
+                        CGPA: 6.54,
+                        picture: "IMG-20190214-WA0123.jpg"
+                    }
+
+
+                }
+
+
+            });
+    </script>
+</body>

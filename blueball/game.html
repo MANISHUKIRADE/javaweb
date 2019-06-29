@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<style>
+    .wrapper {
+        text-align: right;
+    }
+
+    .wrap {
+        text-align: left;
+    }
+
+    button {
+        width: 50px;
+        height: 50px;
+        background: #b6bbb7;
+        margin: 10px;
+        color: #fff;
+        border-radius: 5px;
+        border: none;
+        border-radius: 50%;
+    }
+</style>
+
+<body>
+    <div class="wrapper">
+        <p id="counter"></p>
+    </div>
+    <div class="wrap">
+        <p id="attemp">Attemps remains :</p>
+    </div>
+    <script>
+        var current_minutes
+        let attempts = 5;
+        var random_number = (Math.random() / 2) * 100;
+        var number = Math.floor(random_number);
+
+        console.log(number);
+        function countdown(minutes) {
+            var seconds = 10;
+            var mins = minutes
+            function tick() {
+                var counter = document.getElementById("counter");
+                current_minutes = mins - 1
+                seconds--;
+                counter.innerHTML = "timer : " + current_minutes.toString() + ":" + (seconds < 10 ? "0" : "") + String(seconds);
+
+                if (seconds > 0) {
+                    setTimeout(tick, 1000);
+                }
+
+                if (mins > 1) {
+                    countdown(mins - 1);
+                    console.log("mins")
+                }
+
+            }
+            tick();
+        }
+        countdown(1);
+
+        let body = document.getElementsByTagName("body")[0];
+        var amt = document.getElementById("attemp");
+
+
+        for (var ball = 1; ball <= 50; ball++) {
+            var button = document.createElement("button");
+            button.innerHTML = ball;
+            button.setAttribute('id', 'ball');
+            body.appendChild(button);
+            button.setAttribute('class', 'btn');
+            amt.innerHTML = "attempts " + attempts;
+            changeColour(button);
+
+
+
+        }
+        function changeColour(button) {
+            button.addEventListener("click", function () {
+
+
+                attempts--;
+                amt.innerHTML = "attempts " + attempts;
+                console.log(attempts);
+                innerHTML = number;
+                //   button = document.getElementById(id);
+                console.log(innerHTML);
+                if (button.innerHTML == innerHTML) {
+                    button.style.backgroundColor = "#220ce7";
+                    return;
+                }
+                if (button.innerHTML > innerHTML) {
+                    button.style.backgroundColor = "#eb3d08";
+                }
+                if (button.innerHTML < innerHTML) {
+                    button.style.backgroundColor = "#07b824";
+                }
+                if (attempts == 0 || current_minutes - 1 == 0) {
+                    var elems = document.getElementsByClassName("btn");
+                    for (ball = 0; ball <= 50; ball++) {
+                        elems[ball].disabled = true;
+                    }
+                }
+            })
+        }
+
+
+
+
+    </script>
+</body>
+
+</html>

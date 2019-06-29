@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<head>
+    <title>Start Window</title>
+<style>
+h1, h2, p,b  {  
+    text-align: center;  
+    color: blue;  
+}
+.wrapper {
+    text-align: center;
+}
+
+.button {
+    position: absolute;
+    top: 20%;
+}
+</style>
+</head>
+<body>
+    <h1>Blue Ball Game</h1>
+    <div class="wrapper">
+            <button class="button" onclick="myFunction()">Start game</button>
+        </div><br><br>
+       <h1>click start button to start the game</h1>
+       <p>timer will start at the time you click start button</p>
+       <p>Select the ball you want within 10 second</p>
+       <p> if you are not select the ball then page will close</p>
+<script>
+    function myFunction() {
+  location.replace("game.html");
+}
+
+
+</script>
+</body>

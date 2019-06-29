@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+
+<head>
+    <title>CustomerFilter</title>
+</head>
+
+<body ng-app="customfilter">
+    <div ng-controller="testFilter">{{name | makeuppercase }}
+        <div ng-repeat="name1 in names  " >{{name1 | startWithR }}</div>
+    </div>
+
+    <script src="angular.js"></script>
+    <script>
+        angular.module("customfilter", [])
+            .filter("makeuppercase", function () {
+                return function (text) {
+                    return text.toUpperCase()
+                }
+            })
+            .filter("startWithR",function(){
+                return function(items){
+                    var  filterditems=[];
+                    for(index=0;index<items.length;index++){
+                        var item=items[index]
+                        if(/r/i.test(items.substring(0, 1))){
+                            filterditems.push(item)
+                        }
+
+                    }
+                    return filterditems;
+                }
+            })
+            .controller("testFilter", function ($scope) {
+                $scope.name = "manish";
+                $scope.names = ["manish", "ratnesh", "ratna", "ratswt", "rsada"];
+            });
+    </script>
+</body>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<head>
+    <title>ToggleBacgroundChanger</title>
+</head>
+<body id="bodytag" style="background-color: blue">
+ 
+    <button id="chanegbutton" onclick="changeBackground()">Click Button </button>
+    <script>
+      function changeBackground(){
+           
+          var element= document.getElementById("bodytag");
+       
+          if(element.style.backgroundColor == "blue"){
+               element.style.backgroundColor = "green";
+           }
+           else 
+           element.style.backgroundColor = "blue";
+           }
+
+           
+                  
+
+    </script>
+
+<script>
+   /*     function changeBackground(){
+            
+            countsring = sessionStorage.getItem("count")
+            if(countsring==null){
+                count=0;
+            }
+            if(countsring!=null){
+                count = parseInt(countsring);
+            }
+            count++;
+            console.log(count);
+            sessionStorage.setItem("count",count)
+        
+           if(count%2==0){
+                document.getElementById("back").style.backgroundColor = "green";
+            }
+            else 
+            document.getElementById("back").style.backgroundColor = "blue";
+            }
+ 
+    */        
+                   
+ 
+     </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>

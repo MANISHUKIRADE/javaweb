@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Slider</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        .slidecontainer {
+            width: 100%;
+        }
+
+        .slider {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 25px;
+            background: #d3d3d3;
+            outline: none;
+            opacity: 0.7;
+            -webkit-transition: .2s;
+            transition: opacity .2s;
+        }
+
+        .slider:hover {
+            opacity: 1;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 25px;
+            height: 25px;
+            background: #4CAF50;
+            cursor: pointer;
+        }
+
+        .slider::-moz-range-thumb {
+            width: 0px;
+            height: 0px;
+            background: #4CAF50;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body ng-app="sliderapp">
+
+    <div ng-controller="controlslider">
+
+        <p> slider:</p>
+        <input type="range" min="1" max="100" class="slider" ng-model="sliderinput">
+        <p>{{sliderinput}}</p>
+
+        <button ng-repeat="values in input(sliderinput) track by $index" id={{$index+1}}
+            ng-click="getId($index+1)">DynamicButton{{$index+1}}</button>
+         <div >{{buttonid}}</div>
+    </div>
+
+    <script src="angular.js"></script>
+    <script>
+        angular.module("sliderapp", [])
+            .controller("controlslider", function ($scope) {
+                $scope.sliderinput = 1;
+                $scope.input = [];
+                $scope.input = function (input) {
+                    return new Array(input)
+                }
+                $scope.getId = function (button) {
+                $scope.buttonid=button;
+                }
+
+            });
+    </script>
+
+</body>
+
+</html>

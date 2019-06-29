@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+
+<head>
+    <title>
+        Promises
+    </title>
+</head>
+
+<body>
+    <script>
+        console.log(evenCube(2))
+        asyncEvenCube(2)
+            .then(function (result) {
+                return asyncEvenCube(result)
+            })
+            .then(function (result) {
+                return asyncEvenCube(result)
+            })
+            .then(function (result) {
+                console.log(result)
+            })
+
+        console.log(12)
+        console.log("End")
+
+
+
+        function evenCube(number) {
+            if (number % 2 == 0) {
+                return number * number * number;
+            } else {
+                return "Number is not Even"
+            }
+        }
+
+        function asyncEvenCube(number) {
+            return new Promise(function (resolve, reject) {
+                if (number % 2 == 0) {
+                    resolve(number * number)
+                } else {
+                    reject(Error("Number Is odd"))
+                }
+            })
+
+
+        }
+    </script>
+</body>

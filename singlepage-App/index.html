@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+
+<head>
+    <title>SinglePageApp</title>
+</head>
+
+<body ng-app="singlePageApp">
+
+    
+    <p><a href="#/">Home</a></p>
+
+    <a href="#/contact">Contact</a>
+    <a href="#/aboutus">Abouts</a>
+    <div ng-view></div>
+
+
+
+    <script type="text/ng-template" id="/home.html">
+
+
+    </script>
+    <script type="text/ng-template" id="/contact.html">
+        <h1>Second</h1>
+        
+            </script>
+    <script type="text/ng-template" id="/aboutus.html">
+        <h1>Third</h1>
+        
+            </script>
+
+
+
+
+    <script src="angular.js"></script>
+    <script src="angular-route.js"></script>
+    <script>
+        angular.module("singlePageApp", ['ngRoute'])
+            .config(function ($routeProvider) {
+                $routeProvider
+                    .when('/', {
+                        templateUrl: "/home.html"
+                    })
+                    .when('/contact', {
+                        templateUrl: "/contact.html"
+                    })
+                    .when('/aboutus', {
+                        templateUrl: "/aboutus.html"
+                    });
+
+            })
+            .controller("pageController", function () {
+
+            })
+    </script>
+</body>

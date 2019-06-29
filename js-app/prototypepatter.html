@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+
+<head>
+    <title>Prototype </title>
+</head>
+
+<body>
+    <h1>Prototype pattern</h1>
+    <script>
+        function Employee(fname, lname) {
+            this.fname = fname;
+            this.lname = lname;
+
+            Employee.prototype.getFullName = function () {
+                return ("fname " + this.fname + " laname " + this.lname);
+            }
+        }
+
+        var e1 = new Employee("c", "d");
+        console.log(e1);
+        console.log(e1.__proto__ == Employee.prototype);
+        var e2 = new Employee("c", "d");
+        console.log(e2);
+
+        console.log(e1.__proto__ == e2.__proto__)
+        console.log(e2.__proto__ == e1.__proto__)
+
+    </script>
+</body>

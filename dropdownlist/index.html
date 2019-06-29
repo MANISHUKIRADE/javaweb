@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+
+<head>
+    <title>Drop Down List </title>
+</head>
+
+<body id="body" style="background-color:#9EE6F8 ">
+
+    <select id="myselect" onchange="myFunction()">
+        <option value="#9EE6F8">blue</option>
+        <option value="#7EF374">green</option>
+        <option value="#FAAE8F">red</option>
+    </select>
+    
+
+
+    </select>
+    <script>
+        /*  var optionlist = ["green", "blue", "red", "pink"];
+          for (var i = 0; i < optionlist.length; i++) {
+              document.getElementById("mydropdown").innerHTML =  "<option>"+ optionlist[i] 
+              document.getElementsByTagName("option").setAttribute('id','i');
+  
+          }*/
+
+
+
+        function myFunction() {
+
+            document.getElementById("body").style.backgroundColor = document.getElementById("myselect").value;
+        }
+
+
+    </script>
+
+
+
+
+
+
+</body>

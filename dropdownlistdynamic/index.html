@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+
+<head>
+    <title>MY dynamic Selection</title>
+</head>
+
+<body id="body" style="background-color: green">
+    <select onchange="myFunction()" id="mydropdown">
+
+    </select>
+
+    <script>
+
+
+
+        var optionlist = [
+            {
+                color: "green",
+                value:"#7EF374",
+
+            },
+            {
+                color:"blue",
+                value:"#9EE6F8",
+
+            },
+            {
+                color:"red",
+                value:"#FAAE8F",
+
+            },
+            {
+                color:"pink",
+                value:"#EB1486",
+
+            }]
+
+            
+          
+          
+          
+          
+          
+          
+          for (var i = 0; i < optionlist.length; i++) {
+            var optionvar = document.createElement("OPTION");
+            optionvar.setAttribute("value", optionlist[i].value);
+            var text = document.createTextNode(optionlist[i].color);
+            optionvar.appendChild(text);
+            var selectvar = document.getElementById("mydropdown");
+            selectvar.append(optionvar);
+
+
+
+
+        }
+        function myFunction() {
+
+            document.getElementById("body").style.backgroundColor = document.getElementById("mydropdown").value;
+        }
+    </script>
+</body>

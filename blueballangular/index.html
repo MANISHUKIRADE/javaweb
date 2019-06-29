@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+
+<head>
+    <title>BlueBall</title>
+    <style>
+        .button {
+            width: 60px;
+            height: 60px;
+            background: #b6bbb7;
+            margin: 10px;
+            color: #fff;
+            border-radius: 5px;
+            border: none;
+            border-radius: 50%;
+        }
+    </style>
+</head>
+
+<body ng-app="blueBall">
+    <div ng-controller="startgame">
+        <div id="startpage" ng-hide="startpageflag">
+            <button id="startBut" ng-click="gameOn()">Start</button>
+            <p>=> There Are 50 Balls</p>
+            <p>=>You Have To find the one Blueball between them </p>
+
+        </div>
+        <div ng-show="result" style="color:chartreuse; font-size: 100px;">{{result}}</div>
+        <div ng-hide="result">
+            <div>Attempts:{{attempt}}</div>
+            <div>Timer:{{sec}}</div>
+
+            <button class="button" ng-style="butstyle{{$index+1}}" ng-repeat="values in input(50) track by $index"
+                id={{$index+1}} ng-click="clickedButton($event)">{{$index+1}}</button>
+            <div>
+
+            </div>
+        </div>
+    </div>
+
+    <script src="angular.js"></script>
+    <script src="blueball.min.js">
+           </script>
+</body>

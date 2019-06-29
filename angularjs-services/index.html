@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+
+<head>
+    <title>Services</title>
+</head>
+
+<body ng-app="mathapp">
+    <div>Prime Number</div>
+    <div ng-controller="primeNumberGenerator">
+        <div ng-repeat="number in primenumbers">{{number}}</div>
+    </div>
+    <div>Even Number</div>
+    <div ng-controller="evenNumberGenerator">
+        <div ng-repeat="number in evennumbers">{{number}}</div>
+    </div>
+    <script src="angular.js"></script>
+    <script>
+        angular.module("mathapp", [])
+            .factory("mathservice", function ($log, $q,$timeout) {
+                $log.log("factory")
+                var obj = {};
+                obj.evenNumber = function () {
+                    var num = [];
+                    for (i = 0; i < 100; i++) {
+                        if (i % 2 == 0) {
+                            num.push(i);
+                        }
+                    }
+
+                    return num;
+                }
+                obj.primeNumber = function () {
+                    var num = [];
+                    for (i = 2; i <= 100; i++) {
+                        var c = 0;
+                        for (j = 1; j <= i; j++) {
+                            if (i % j == 0) {
+                                c++;
+                            }
+                        }
+
+                        if (c == 2) {
+                            num.push(i);
+                        }
+                    }
+                    return num;
+                }
+                obj.asyncyprime = function () {
+
+
+                    return $q(function (resolve, reject) {
+                        $timeout(function () {
+
+                            var num = [];
+                            for (i = 2; i <= 100; i++) {
+                                var c = 0;
+                                for (j = 1; j <= i; j++) {
+                                    if (i % j == 0) {
+                                        c++;
+                                    }
+                                }
+
+                                if (c == 2) {
+                                    num.push(i);
+                                }
+                            }
+
+
+                            resolve(num);
+
+
+
+                        }, 3000);
+                    })
+                }
+
+                return obj;
+            })
+            .controller("evenNumberGenerator", function (mathservice, $scope) {
+                $scope.evennumbers = mathservice.evenNumber();
+            })
+            .controller("primeNumberGenerator", function (mathservice, $scope) {
+                $scope.value = 'init value';
+
+                mathservice.asyncyprime()
+
+                    .then(function (num) {
+                        $scope.primenumbers = num
+                    });
+            });
+    </script>
+</body>

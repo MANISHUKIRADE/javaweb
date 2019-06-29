@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+
+<head>
+    <title>
+        Breakline
+    </title>
+</head>
+
+<body>
+    Text: <input type="text" id="myinput" onkeydown="myfunction(event)">
+    <div id="mytext"></div>
+
+</body>
+<script>
+    var mystring = new String();
+    var arrayforstring = [];
+    var arrayindex = 0;
+    function myfunction(event) {
+
+        if ((event.keyCode >= 64) && (event.keyCode <= 90) || (event.key == 13)) {
+            character = event.key;
+
+
+            mystring = mystring.concat(character);
+            displayarry(arrayforstring);
+        }
+
+
+
+        //document.getElementById("mytext").innerHTML = mystring;
+
+
+        if (event.keyCode == 8) {
+            mystring = mystring.slice(0, mystring.length - 1);
+
+
+        }
+
+        //document.getElementById("mytext").innerHTML = mystring;
+
+        if (event.keyCode == 32) {
+            mystring = mystring.concat(" ");
+
+        }
+
+        if (event.keyCode == 13) {
+            arrayforstring[arrayindex] = mystring;
+
+
+            displayarry(arrayforstring[arrayindex]);
+            mystring = mystring.slice(0, 0);
+            document.getElementById("myinput").value = null;
+            arrayindex++;
+            console.log(arrayforstring);
+
+            displayarry(arrayforstring);
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+    }
+
+
+    function displayarry(arrayforstring) {
+        var printstring = "<p>";
+            
+        for (i = 0; i < arrayforstring.length; i++) {
+            printstring = printstring + "<p id=p" + i + "><button id=" + i + " onclick=deleteFunction(this);>X</button>" + arrayforstring[i]
+        }
+        document.getElementById("mytext").innerHTML = printstring;
+
+
+
+
+    }
+
+
+    function deleteFunction(button) {
+        var num = button.id;
+        arrayforstring.splice(num, 1);
+
+        
+
+        displayarry(arrayforstring);
+        arrayindex--;
+        
+
+    }
+
+
+</script>

@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+
+<head>
+    <title>
+        Student Details
+    </title>
+</head>
+<style>
+    .center {
+        margin: auto;
+        text-align: center;
+        width: 60%;
+        border: 3px solid khaki;
+        padding: 10px;
+        color: darkred
+    }
+
+    .tablecenter {
+        margin: auto;
+        text-align: center;
+        color: darkred
+    }
+
+    table,
+    th,
+    tr {
+        text-align: center;
+        border: 1px ridge orangered;
+
+    }
+</style>
+
+<body>
+    <div class="center">
+
+        <div id="data"> Name<input type="text" id="sname"><br><br>
+            RollNo: <input type="number" id="srollno"><br><br>
+            Date:<input type="date" id="sdate"><br><br>
+            Email Id:<input type="email" id="semail"><br>
+            <br>Age: <input type="number" id="sage"><br><br>
+            Gender:<input type="radio" name="gender" id="Male" value="Male">Male <input type="radio" id="Female"
+                name="gender" value="Female">Female
+            <br>
+        </div>
+
+        <div style="color: green" id="addmessage"></div><button id="mybut">ADD</button><button
+            class="edit">Edit</button>
+    </div>
+    <table id="mytable" class="tablecenter">
+
+    </table>
+    <script src="jquery.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
+    <script>
+        var Student = [];
+        var flag = 1;
+        $(document).ready(function () {
+            $("#edit").hide();
+            $("#mybut").click(function () {
+                $("#mytable").empty();
+                sname = $("#sname").val();
+                srollno = $("#srollno").val();
+                semail = $("#semail").val();
+                sage = $("#sage").val();
+                sdate = $("#sdate").val();
+
+                $("#addmessage").empty();
+                if ((sname != null) && ((srollno != "") || (srollno != null)) && (semail != null) && ((sage != null) || (sage != "")) && (sdate != null)) {
+                    $("#sname").hide()
+                    $("#srollno").hide()
+                    $("#semail").hide()
+                    $("#sage").hide()
+                    $("#sdate").hide()
+                    $("#Male").hide()
+                    $("#Female").prop("checked", false)
+                    $("#mybut").hide();
+                    $("#data").hide();
+                    $("#addmessage").empty();
+                    if ($("input[name='gender']:checked").val() == "Male") {
+                        sgender = true;
+                    } else {
+                        sgender = false;
+                    }
+                    $.post("http://gsmktg.azurewebsites.net/api/v1/techlabs/test/students", {
+                        name: sname,
+                        rollNo: srollno,
+                        age: sage,
+                        isMale: sgender,
+                        email: semail,
+                        date: sdate
+                    }, printrable = function () {
+                        $("#addmessage").empty();
+                        if (flag == 1) {
+                            $("#addmessage").append("Data Added Successfully")
+                        }
+                        else if (flag == 0) {
+                            $("#addmessage").append("Data Deleted Successfully")
+                        }
+                        $("#mytable").empty();
+
+                        var result = $.get("http://gsmktg.azurewebsites.net/api/v1/techlabs/test/students/", function () {
+                            Student = result.responseJSON;
+                            console.log(Student)
+                            string = "<tr><th>Edit</th><th>Delete</th><th>Name</th><th>RollNo</th><th>date</th><th>email is</th><th>age</th><th>Gender</th></tr> ";
+                            for (index = 0; index < Student.length; index++) {
+                                var gender;
+                                if (Student[index].isMale == true) {
+                                    gender = "Male"
+                                } else {
+                                    gender = "Female"
+                                }
+                                string = string + "<tr><th id=ed" + index + "></th><th id =but" + index + "></th><th>" + Student[index].name + "</th><th>" + Student[index].rollNo + "</th><th>" + Student[index].date + "</th><th>" + Student[index].email + "</th><th>" + Student[index].age + "</th><th>" + gender + "</th></tr> "
+                            }
+                            $("#mytable").append(string)
+                            for (index = 0; index < Student.length; index++) {
+                                var editbut = $('<input/>').attr({ type: 'button', value: "Edit", id: Student[index].id })
+                                var tempbut = $('<input/>').attr({ type: 'button', value: "X", id: Student[index].id })
+                                $(tempbut).click(function () {
+                                    var Delete = getConfirmation();
+
+                                    if (Delete == true) {
+                                        id = this.id;
+                                        $.ajax({
+                                            url: 'http://gsmktg.azurewebsites.net/api/v1/techlabs/test/students/' + id,
+                                            type: 'DELETE',
+                                            success: function () {
+                                                flag = 0
+                                                printrable();
+                                            }
+                                        });
+                                    } else alert("Delete Option is Cancelled")
+
+                                })
+                                $(editbut).click(function () {
+                                    $("#sname").show()
+                                    $("#srollno").show()
+                                    $("#semail").show()
+                                    $("#sage").show()
+                                    $("#sdate").show()
+                                    $("#Male").show()
+                                    $("#Female").show()
+                                    $("#edit").show();
+                                    $(".edit").prop("id", this.id)
+                                    $("#data").show()
+                                    $("#addmessage").empty()
+                                    id = this.id;
+                                    var result = $.get("http://gsmktg.azurewebsites.net/api/v1/techlabs/test/students/" + id, function () {
+                                        editstudent = result.responseJSON;
+                                        console.log(editstudent[0])
+                                        name = editstudent[0].name;
+                                        rollNo = editstudent[0].rollNo
+                                        email = editstudent[0].email
+                                        age = editstudent[0].age
+                                        date = editstudent[0].date
+                                        ismale = editstudent[0].isMale
+                                        $("#sname").val(name)
+                                        $("#srollno").val(rollNo)
+                                        $("#semail").val(email)
+                                        $("#sage").val(age)
+                                        $("#sdate").val(date)
+                                        if (ismale == true) {
+                                            $("#Male").prop("checked", true)
+
+                                        } else
+                                            $("#Female").prop("checked", true)
+
+
+                                    })
+                                    $(".edit").click(function () {
+                                        id = this.id;
+                                        sname = $("#sname").val();
+                                        srollno = $("#srollno").val();
+                                        semail = $("#semail").val();
+                                        sage = $("#sage").val();
+                                        sdate = $("#sdate").val();
+
+                                        if ($("input[name='gender']:checked").val() == "Male") {
+                                            sgender = true;
+                                        } else {
+                                            sgender = false;
+                                        }
+                                        $.ajax({
+                                            url: 'http://gsmktg.azurewebsites.net/api/v1/techlabs/test/students/' + id,
+                                            type: 'PUT',
+
+                                            data: { name: sname, rollNo: srollno, email: semail, age: sage, sdate: sdate, isMale: sgender },
+                                            success: function () {
+
+                                                printrable();
+                                            }
+                                        });
+
+
+                                    })
+                                    /*   id = this.id;
+                                       $.ajax({
+                                           url: 'http://gsmktg.azurewebsites.net/api/v1/techlabs/test/students/' + id,
+                                           type: 'PUT',
+                                           success: function () {
+                                               flag = 0
+                                               printrable();
+                                           }
+                                       });*/
+                                })
+
+                                $("#but" + index).append(tempbut);
+                                $("#ed" + index).append(editbut);
+                            }
+
+                        })
+                    })
+                }
+
+            })
+            function getConfirmation() {
+                var retVal = confirm("Do you want to continue ?");
+                if (retVal == true) {
+
+                    return true;
+                } else {
+
+                    return false;
+                }
+            }
+
+
+
+
+
+
+
+        })
+    </script>
+</body>

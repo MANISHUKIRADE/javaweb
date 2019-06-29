@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+
+<head>
+    <title>Queston Answer</title>
+    <style type="text/css">
+        .wrapper {
+            text-align: center;
+            background: navy;
+        }
+
+        .textWrapper {
+            text-align: center;
+            color: mediumblue;
+            font-size: 25px;
+        }
+
+        .Qestion {
+            display: block;
+            position: relative;
+            text-align: center;
+            top: 100px;
+        }
+
+        .Option {
+            display: block;
+            position: relative;
+            text-align: center;
+            top: 150px;
+        }
+
+        p1 {
+            display: block;
+            position: relative;
+            text-align: center;
+            top: 150px;
+        }
+
+        p2 {
+            display: block;
+            position: relative;
+            text-align: center;
+            top: 150px;
+        }
+
+        p3 {
+            display: block;
+            position: relative;
+            text-align: center;
+            top: 150px;
+        }
+
+        p4 {
+            display: block;
+            position: relative;
+            text-align: center;
+            top: 150px;
+        }
+
+        .container {
+            display: block;
+            position: relative;
+            top: 150px;
+            align-content: center;
+            padding-left: 35px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            font-size: 22px;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        /* Hide the browser's default radio button */
+        .container input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        /* Create a custom radio button */
+        .checkmark {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 25px;
+            width: 25px;
+            background-color: #eee;
+            border-radius: 50%;
+        }
+
+        /* On mouse-over, add a grey background color */
+        .container:hover input~.checkmark {
+            background-color: #ccc;
+        }
+
+        /* When the radio button is checked, add a blue background */
+        .container input:checked~.checkmark {
+            background-color: #2196F3;
+        }
+
+        /* Create the indicator (the dot/circle - hidden when not checked) */
+        .checkmark:after {
+            content: "";
+            position: absolute;
+            display: none;
+        }
+
+        /* Show the indicator (dot/circle) when checked */
+        .container input:checked~.checkmark:after {
+            display: block;
+        }
+
+        /* Style the indicator (dot/circle) */
+        .container .checkmark:after {
+            top: 9px;
+            left: 9px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: white;
+        }
+    </style>
+</head>
+
+<body>
+    <button id="prebut">Previuos</button>
+    <button id="nextbt" style="position: relative;  left:1200px;">Next</button>
+
+    <div class="wrapper">
+
+        <button class="startbutton" onclick="myFunction()">Start</button>
+
+
+
+
+
+    </div>
+    <div class="outer-div"></div>
+    <div qattempt> </div><br>
+    <div id="attempt" style="text-align: center  ;"></div>
+
+    <div id="correct" style="text-align: center  ;"></div><br>
+    <div id="fail" style="text-align: center  ;"></div><br>
+    <div id="unattempt" style="text-align: center  ;"></div><br>
+
+    <div class="textWrapper">
+
+        <div class="Qestion">
+            <p id="qest"></p>
+
+        </div>
+
+    </div>
+    <label id="option1" class="container">
+    </label>
+    <label id="option2" class="container">
+    </label>
+    <label id="option3" class="container">
+    </label>
+    <label id="option4" class="container">
+    </label>
+    <button id="subbt" style="position: relative; top: 150px; left:700px;">Submit</button>
+    <div id="chartContainer" style="height: 300px; width: 100%;"></div>
+    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+
+    <script>
+
+        var Score = 0;
+        var wrong = 0;
+
+
+
+        Question = [
+            {
+                id: 1,
+                qestion: "India is a federal union comprising twenty-nine states and how many union territories?",
+                options: "6,7,8,9",
+                answer: "B",
+            },
+            {
+                id: 2,
+                qestion: "Which of the following is the capital of Arunachal Pradesh?",
+                options: "Itanagr,Imphal,Dispur,Shilong",
+                answer: "A",
+
+            },
+            {
+                id: 3,
+                qestion: "What are the major languages spoken in Andhra Pradesh?",
+                options: "English and Telugu,Telugu and Urdu,Telugu and Kannada,All of the above languages",
+                answer: "B",
+
+            },
+
+            {
+                id: 4,
+                qestion: " What is the state flower of Haryana?",
+                options: "Lotus,Rhododendron,Golden Shower,Not declared",
+                answer: "A",
+
+            },
+
+            {
+                id: 5,
+                qestion: " Which of the following states is not located in the North?",
+                options: "Jharkhand,jammu-kashmir,haryana,punjab",
+                answer: "A",
+
+            },
+
+            {
+                id: 6,
+                qestion: "In which state is the main language Khasi?",
+                options: "Mizoram,Nagaland,Meghalay,Tripura",
+                answer: "C",
+
+            },
+
+            {
+                id: 7,
+                qestion: "Which state has Almond as its State Tree?",
+                options: "Arunachal Pradesh,Goa ,Jammu-kashmir,Himachal Pradesh",
+                answer: "C",
+
+            },
+
+            {
+                id: 8,
+                qestion: "hich state has the largest area?",
+                options: "Mharashatra,UtterPradesh,Rajsthan,Madhyapradesh",
+                answer: "C",
+
+            },
+
+            {
+                id: 9,
+                qestion: "Which state has the largest population?",
+                options: "Maharshatra,UtterPradesh,Bihar,MadhyaPradesh",
+                answer: "B",
+
+            },
+
+            {
+                id: 10,
+                qestion: " In what state are the Elephant Falls located?",
+                options: "Mizoram,Manipur,Orrisa,Meghalya",
+                answer: "D",
+
+            }];
+
+
+
+
+
+        function myFunction() {
+
+            console.log("Inside")
+            var randomno = [];
+            var numberepeater = true;
+            console.log(randomno.length);
+            var index = 0;
+
+            while (randomno.length != 5) {
+                
+                generated_random_number = Math.floor(((Math.random() * 100) % 10));
+                if (randomno.length == 0) {
+                    randomno.push(generated_random_number)
+                }
+                numberepeater = check(generated_random_number);
+                if (numberepeater == true) {
+                    randomno.push(generated_random_number)
+                    index++
+                }
+                console.log(randomno);
+
+            }
+
+
+            function check(generated_random_number) {
+                numberepeater = true;
+                for (iterator = 0; iterator <= randomno.length; iterator++) {
+                    if (randomno[iterator] == generated_random_number) {
+                        numberepeater = false;
+                    }
+                }
+                return numberepeater;
+
+            }
+
+            console.log(randomno);
+            currnetqestionno = randomno.pop();
+            var qestion = new Qestion(currnetqestionno);
+            document.getElementById("attempt").innerHTML = " " + 5 - randomno.length + "/5"
+            qestion.getQestion();
+            console.log(randomno)
+
+
+            var qestionbank = new QestionBank(randomno);
+
+            document.getElementById("nextbt").addEventListener("click", qestionbank.getNextQuestion);
+            document.getElementById("prebut").addEventListener("click", qestionbank.getprevQestion);
+            document.getElementById("subbt").addEventListener("click", function () {
+             
+             
+                document.getElementById('qest').style.display = "none";
+                document.getElementById('option1').style.display = "none";
+                document.getElementById('option2').style.display = "none";
+                document.getElementById('option3').style.display = "none";
+                document.getElementById('option4').style.display = "none";
+                document.getElementById("nextbt").style.display = "none";
+                document.getElementById("subbt").style.display = "none";
+                document.getElementById("attempt").style.display = "none";
+
+
+                var div = document.getElementsByClassName("outer-div");
+                document.getElementById("correct").innerHTML = "Your  Correct  " + Score + " out of 5 "
+                document.getElementById("fail").innerHTML = "Your  Fail " + (5 - Score - randomno.length) + " out of 5 "
+                document.getElementById("unattempt").innerHTML = "You are not attempt the  " + randomno.length + " "
+
+
+
+                var chart = new CanvasJS.Chart("chartContainer", {
+                    animationEnabled: true,
+                    title: {
+                        text: "Result over view"
+                    },
+                    data: [{
+                        type: "pie",
+                        startAngle: 240,
+                        yValueFormatString: "##0.00\"%\"",
+                        indexLabel: "{label} {y}",
+                        dataPoints: [
+                            { y: (Score / 5) * 100, label: "Pass" },
+                            { y: ((5 - Score - randomno.length) / 5) * 100, label: "Fail" },
+                            { y: (randomno.length / 5) * 100, label: "Unattempted" }
+
+                        ]
+                    }]
+                })
+                chart.render();
+            })
+            document.getElementsByClassName("button").disabled = true;
+        }
+        
+        
+        
+        
+        function QestionBank(randomno) {
+            var currnetqestionno = 0;
+            var randomno;
+            this.randomno = randomno;
+            var previus = [];
+
+            this.getNextQuestion = function () {
+                currnetqestionno = randomno.pop();
+                previus.push(currnetqestionno);
+                var qestion = new Qestion(currnetqestionno);
+                document.getElementById("attempt").innerHTML = " " + 5 - randomno.length + "/5"
+                qestion.getQestion();
+
+            }
+
+            this.getprevQestion = function () {
+                currnetqestionno = previus.pop();
+                randomno.push(currnetqestionno);
+                qestion = new Qestion(currnetqestionno);
+                qestion.getQestion();
+            }
+        }
+
+
+
+        function Qestion(currnetqestionno) {
+            var currnetqestionno;
+            this.currnetqestionno = currnetqestionno;
+            console.log(currnetqestionno)
+
+
+            this.getQestion = function () {
+
+
+
+                document.getElementById("qest").innerHTML = Question[currnetqestionno].qestion;
+
+                console.log("Qestion[currnetqestionno]", Qestion[currnetqestionno]);
+
+                var option = Question[currnetqestionno].options
+                var splitoption = option.split(",");
+               
+                console.log(splitoption);
+
+
+
+
+                option1 = document.getElementById("option1");
+                option2 = document.getElementById("option2");
+                option3 = document.getElementById("option3");
+                option4 = document.getElementById("option4");
+                option1.innerHTML = '<input id="option1" type="radio" value="A" name="radio"><span class="checkmark"></span>' + splitoption[0];
+                option2.innerHTML = '<input id="option2" type="radio" value="B" name="radio"><span class="checkmark"></span>' + splitoption[1];
+                option3.innerHTML = '<input id="option3" type="radio" value="C" name="radio"><span class="checkmark"></span>' + splitoption[2];
+                option4.innerHTML = '<input id="option4" type="radio" value="D" name="radio"><span class="checkmark"></span>' + splitoption[3];
+
+                document.getElementById("option1").checked = false;
+                document.getElementById("option2").checked = false;
+                document.getElementById("option3").checked = false;
+                document.getElementById("option4").checked = false;
+
+                document.getElementById("option1").addEventListener("change", scorefalg1)
+                document.getElementById("option2").addEventListener("change", scorefalg2)
+                document.getElementById("option3").addEventListener("change", scorefalg3)
+                document.getElementById("option4").addEventListener("change", scorefalg4)
+
+
+                var scorefalg1 = function () {
+
+                    if (Question[currnetqestionno].answer == "A") {
+                        Score = Score + 1;
+                        //document.getElementById("option1").checked = false;
+                    }
+                    else {
+                        wrong = wrong + 1;
+                        //document.getElementById("option1").checked = false;
+                    }
+                }
+                function scorefalg2() {
+                    if (Question[currnetqestionno].answer == "B") {
+                        Score = Score + 1;
+                        //document.getElementById("option2").checked = false;
+                    }
+                    else {
+                        wrong = wrong + 1
+                        //document.getElementById("option2").checked = false;
+                    }
+                }
+                function scorefalg3() {
+
+                    if (Question[currnetqestionno].answer == "C") {
+                        Score = Score + 1;
+                        //document.getElementById("option3").checked = false;
+                    }
+                    else {
+                        wrong = wrong + 1;
+                        //document.getElementById("option3").checked = false;
+                    }
+                }
+                function scorefalg4() {
+                    if (Question[currnetqestionno].answer == "D") {
+                        Score = Score + 1;
+                        //document.getElementById("option4").checked = false;
+                    } else {
+                        wrong = wrong + 1;
+                        //document.getElementById("option4").checked = false;
+                    }
+                }
+            }
+        }
+
+    </script>
+</body>

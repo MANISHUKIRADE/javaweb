@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<head>
+    <title>global page for js app</title>
+</head>
+<body>
+    <script>
+        var foo;
+        console.log(typeof foo);
+        foo =10;
+        console.log(typeof foo);
+        foo ="hello";
+        console.log(typeof foo);
+        foo =true;
+        console.log(typeof foo);
+        foo = {};
+        foo.bar ="this is bar";
+        console.log(typeof foo);
+        console.log(foo['bar']);
+        foo = function()
+        {console.log("function foo")
+        }
+        console.log(typeof foo);
+        foo();
+        console.log(window);
+        console.log(window.foo);
+        console.log(window.document);
+        console.log(document);
+        console.log(location);
+        console.log(window.console);
+        console.log(this==window);
+
+
+
+
+
+    </script>
+    
+</body>

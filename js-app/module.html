@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+
+<head>
+    <title>
+        Module Pattern
+    </title>
+</head>
+
+<body>
+    <h1>Module pattern</h1>
+    <script>
+        function makeEmployee() {
+            var emp = {};
+            var _fname, _lname;
+            emp.setFname = function (fname) {
+                if (fname.length > 1) {
+                    _fname = fname;
+                }
+            }
+
+            emp.setLname = function (lname) {
+                if (lname.length > 1) {
+                    _lname = lname;
+                }
+            }
+            emp.getFname = function () {
+                return _fname;
+            }
+            emp.getLname = function () {
+                return _lname
+            }
+            emp.getFullname = function () {
+                return ("fname " + _fname + " lname " + _lname);
+
+            }
+            return emp;
+        }
+        var employee1 = makeEmployee();
+        employee1.setFname("manish");
+        employee1.setLname("ukirade");
+        console.log(employee1);
+        var fullname = employee1.getFullname();
+        console.log(fullname);
+
+
+    </script>
+    <script>
+        Swabhav = {};
+        Swabhav.cube = function (number) {
+            return number * number * number;
+
+        }
+        Swabhav.isPrime = function (number) {
+            var flag = false;
+            for (var index = 2; index <= number / 2; ++index) {
+
+                if (number % index == 0) {
+                    flag = true;
+                    break;
+                }
+            }
+            if (flag == true) {
+                return ("this is prime");
+            }
+            else {
+                return ("this is not prime");
+            }
+        }
+
+
+        number1 = Swabhav.cube(2);
+        console.log(number1);
+        console.log(Swabhav.isPrime(7));
+
+
+    </script>
+    <script>
+        var Swabhav = function () {
+           var obj={};
+            console.log("Inside Swabhav");
+             obj.cube = function (number) {
+                return number * number * number;
+            }
+             obj.isprime = function (number) {
+                var flag = false;
+                for (var index = 2; index <= number / 2; ++index) {
+
+                    if (number % index == 0) {
+                        flag = true;
+                        break;
+                    }
+                }
+                if (flag == true) {
+                    return ("this is prime");
+                }
+                else {
+                    return ("this is not prime");
+                }
+            }
+            return obj;
+        }();
+        console.log(Swabhav.cube(2));
+        console.log(Swabhav.isprime(3));
+    </script>
+</body>

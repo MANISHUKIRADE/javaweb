@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+
+<head>
+  <title>Local Storage</title>
+</head>
+
+<body>
+  <button onclick="myFunction()">Click me</button>
+  <div id="result"></div>
+
+  <script>
+    const Student = [{
+      id: 1,
+      name: "manish",
+    },
+    {
+      id: 2,
+      name: "ratnesh",
+    },
+    {
+      id: 3,
+      name: "mahesh"
+    },
+    ]
+
+
+
+
+
+
+    function myFunction() {
+
+      if (typeof (Storage) !== "undefined") {
+        for (index = 0; index < Student.length; index++)
+          localStorage.setItem("student" + index, JSON.stringify(Student[index]));
+      }
+      var id1 =parseInt (localStorage.getItem("student")[0].id)
+    
+
+
+
+      var printstring = "<p>";
+      for (index = 0; index < Student.length; index++) {
+        splitdata = localStorage.getItem("student" + index).split(",");
+        printstring = printstring.concat("<p id =" + index + ">" + splitdata + "</p>");
+        document.getElementById("result").innerHTML = printstring;
+
+      }
+
+
+
+
+
+    }
+  </script>
+</body>

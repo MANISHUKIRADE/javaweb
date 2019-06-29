@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+
+<head>
+    <title>
+        Customer Form
+    </title>
+
+    <style>
+        .center {
+            margin: auto;
+            text-align: center;
+            width: 60%;
+            border: 3px solid #73AD31;
+            padding: 10px;
+            color: darkred
+        }
+
+        .tablecenter {
+            margin: auto;
+            text-align: center;
+            color: darkred
+        }
+
+        table,
+        th,
+        tr {
+            text-align: center;
+            border: 1px ridge orangered;
+
+        }
+    </style>
+</head>
+
+<body>
+    <div class="center">
+        <h1>Customer Form</h1>
+
+        Name: <input type="text" id="nameinput"><br>
+        <p> Gender: <input type="radio" id="male" name="gender" value="Male">Male <input type="radio" name="gender"
+                id="female" value="Female">female<br></p>
+        <br>Age: <input type="text" id="age"><br><br>
+        Credit Card : <select id="creditcard">
+            <option value="VISA">VISA</option>
+            <option value="MASTER">MASTER</option>
+            <option value="AMEX">AMEX</option>
+        </select><br><br>
+        <button id="mybutton" onclick="printTable()">Add Customer</button>
+        <div id="myedits"></div>
+    </div>
+    <div class="tablecenter">
+        <h2>Table</h2>
+        <table id="printtable" class="tablecenter"></table>
+    </div>
+
+
+    <script>
+        var Name = [];
+        var Gennder = [];
+        var Age = [];
+        var CreditCard = [];
+        var customerCount = 0;
+        var flag = 1;
+        
+
+
+        function printTable() {
+            var name = document.getElementById("nameinput");
+            if (name.value.length == 0) {
+                Name[customerCount] = "Empty"
+            } else {
+                Name[customerCount] = name.value;
+            }
+
+            if (document.getElementById("male").checked == true) {
+                Gennder[customerCount] = document.getElementById("male").value;
+            } else if (document.getElementById("female").checked == true) {
+                Gennder[customerCount] = document.getElementById("female").value;
+            } else {
+                Gennder[customerCount] = null
+            }
+
+            var age = document.getElementById("age");
+            if (age.value.length == 0) {
+                Age[customerCount] = "Empty"
+            } else {
+                Age[customerCount] = age.value;
+            }
+
+
+            CreditCard[customerCount] = document.getElementById("creditcard").value;
+
+
+            if ((Name[customerCount] != "Empty") && (Age[customerCount] != null) && (CreditCard[customerCount] != null) && (Gennder[customerCount] != null)) {
+                customerCount++;
+                prinTablestrint();
+                document.getElementById("nameinput").value = null;
+                document.getElementById("male").checked = false;
+                document.getElementById("female").checked = false;
+                document.getElementById("age").value = null;
+                document.getElementById("creditcard").value = null;
+
+
+
+            }
+
+
+
+        }
+
+
+        function prinTablestrint() {
+            var printString = "<tr><th>Edit</th><th>Delete</th><th>name</th><th>Gender</th><th>Age</th><th>creditCard</th></tr>"
+            if (customerCount != 0) {
+                for (index = 0; index <= customerCount - 1; index++) {
+                    printString = printString + "<tr><th><button id=e" + index + " onClick= Action(this)>Edit</button></th><th><button id=" + index + " onClick= deleteCustomer(this)>X</button></th><th>" + Name[index] + "</th><th>" + Gennder[index] + "</th><th>" + Age[index] + "</th><th>" + CreditCard[index] + "</th></tr>";
+                    document.getElementById("printtable").innerHTML = printString;
+                }
+            } else {
+                document.getElementById("printtable").innerHTML = printString;
+            }
+
+        }
+
+        function deleteCustomer(button) {
+            butid = button.id;
+            Name.splice(butid, 1);
+            Age.splice(butid, 1);
+            CreditCard.splice(butid, 1);
+            Gennder.splice(butid, 1);
+            console.log(Name, Age, CreditCard, Gennder)
+
+
+            customerCount--;
+            prinTablestrint();
+
+
+
+
+
+        }
+        function editCustomer(button) {
+            butid = button.id;
+            butid = butid.substring(1, butid.length);
+            document.getElementById("nameinput").value = Name[butid];
+            if (Gennder[butid] == "Male") {
+                document.getElementById("male").checked = true;
+            } else if (Gennder[butid] == "Female") {
+                document.getElementById("female").checked = true;
+            }
+
+
+            document.getElementsByName("gender").value = Gennder[butid];
+            document.getElementById("age").value = Age[butid];
+            document.getElementById("creditcard").value = CreditCard[butid];
+            document.getElementById("mybutton").disabled = true;
+
+
+            document.getElementById("myedits").innerHTML = "<button id=d" + butid + " onClick=EditDataTable(this)>Edit Customer</button>"
+
+        }
+
+        function EditDataTable(button) {
+            flag = 1;
+            butid = button.id
+            butid = butid.substring(1, butid.length);
+            Name[butid] = document.getElementById("nameinput").value;
+            Age[butid] = document.getElementById("age").value;
+            CreditCard[butid] = document.getElementById("creditcard").value;
+            if (document.getElementById("male").checked == true) {
+                Gennder[butid] = document.getElementById("male").value;
+            } else if (document.getElementById("female").checked == true) {
+                Gennder[butid] = document.getElementById("female").value;
+            } else {
+                Gennder[butid] = null
+            }
+            prinTablestrint();
+            document.getElementById("nameinput").value = null;
+            document.getElementById("male").checked = false;
+            document.getElementById("female").checked = false;
+            document.getElementById("age").value = null;
+            document.getElementById("creditcard").value = null;
+            document.getElementById(button.id).disabled = true;
+            document.getElementById("mybutton").disabled = false;
+
+        }
+        function Action(button) {
+
+            if ((document.getElementById(button.id).innerHTML == "Edit") && (flag == 1)) {
+                editCustomer(button);
+                document.getElementById(button.id).innerHTML = "cancel"
+                flag = 0;
+
+            } else if (document.getElementById(button.id).innerHTML == "cancel") {
+                cancelEdit(button);
+                document.getElementById(button.id).innerHTML = "Edit"
+            }
+        }
+        function cancelEdit(button) {
+            flag = 1;
+            butid = button.id
+            butid = butid.substring(1, butid.length);
+            prinTablestrint();
+            document.getElementById("nameinput").value = null;
+            document.getElementById("male").checked = false;
+            document.getElementById("female").checked = false;
+            document.getElementById("age").value = null;
+            document.getElementById("creditcard").value = null;
+
+            document.getElementById("mybutton").disabled = false;
+            document.getElementById("d" + butid).disabled = true;
+
+
+        }
+
+
+    </script>
+
+</body>

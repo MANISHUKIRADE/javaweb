@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+
+<head>
+    <title>STudentLoadEvent</title>
+</head>
+
+<body>
+    <div ng-app="eventapp" ng-controller="maincontroller">
+        <button ng-click="loadData()">Load</button>
+        <p >{{student.fname}}</p>
+        <p >{{student.lname}}</p>
+        <img ng-src="{{student.picture}}" style="height: 90px; width: 90px">
+    </div>
+    <script src="angular.js"></script>
+    <script>
+        angular.module("eventapp", [])
+            .controller("maincontroller", function ($scope, $timeout) {
+
+
+                
+
+                $scope.loadData = function () {
+                    $scope.student =  {
+                    "fname" : "Manish",
+                    "lname" : "Ukirde",
+                    "CGPA" : 6.54,
+                    "picture" : "IMG-20190214-WA0123.jpg"
+                }
+
+                $timeout(changeData,3000)
+
+                }
+                function changeData() {
+                    $scope.spinerIsOff = true;
+                    $scope.student = {
+                        fname: "Ratnesh",
+                        lname: "Dubey",
+                        CGPA: 6.54,
+                        picture: "IMG-20190214-WA0123.jpg"
+                    }
+                }
+            });
+    </script>
+</body>
