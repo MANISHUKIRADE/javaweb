@@ -2,70 +2,98 @@
 
 <head>
     <title>Student Services</title>
-    <style>
-        table,
-        th,
-        td {
-            border: 1px solid grey;
-            border-collapse: collapse;
-            padding: 5px;
-        }
 
-        table tr:nth-child(odd) {
-            background-color: #f1f1f1;
-        }
-
-        table tr:nth-child(even) {
-            background-color: #ffffff;
-        }
-    </style>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 
 </head>
 
 <body ng-app="studentServices">
-    <div ng-controller="studentControllerEditor">
-        Name: <input type="text" ng-model="name"><br><br>
-        Age: <input type="number" ng-model="Age"><br><br>
-        RollNo: <input type="number" ng-model="rollno"><br><br>
-        Email: <input type="Email" ng-model="email"><br><br>
-        Select Gender: <select ng-model="ismale">
 
-            <option value="true" ng-selected="male">Male</option>
-            <option value="false" ng-selected="female">Female</option>
-        </select><br><br>
-        <input type="date" ng-model="date"><br><br>
-        <br><br>
-        <button ng-click="addStudent()" ng-hide="editModeOn">Add Student</button>
-        <button ng-click="EditStudentAct()" ng-show="editModeOn">Edit Student</button>
-        <br><br>
-    </div>
-    <div ng-controller="studentController">
-        <table>
+    <div class="container">
 
-            <head>
-                <tr>
-                    <td>Delete</td>
-                    <td>Edit</td>
-                    <td>Name</td>
-                    <td>Rollno</td>
-                    <td>Email</td>
-                    <td>Gender</td>
-                    <td>age</td>
-                    <td>Date</td>
-                </tr>
-                </tr>
-                </thead>
-                <tr ng-repeat="student in studentData">
-                    <td><button id="{{student.id}}" ng-click="studentDelete($event)">X</button> </td>
-                    <td><button id="e{{student.id}}" ng-click="studentEdit($event)">Edit</button> </td>
-                    <td>{{student.name}}</td>
-                    <td>{{student.rollNo}}</td>
-                    <td>{{student.email}}</td>
-                    <td>{{student.isMale | genderFilter }}</td>
-                    <td>{{student.age}}</td>
-                    <td>{{student.date | date : mm/dd/yyyy}}</td>
-                </tr>
-        </table>
+
+
+        <div class="jumbotron text-center">
+            <div class="container">
+                <h1>Student Enroll</h1>
+
+            </div>
+        </div>
+
+        <div ng-controller="studentControllerEditor">
+            <div class="form-group">
+                <label class="control-label col-sm-1" for="name">Name:</label>
+                <div class="col-sm-11">
+                    <input class="form-control" type="text" ng-model="name" name="name"><br><br>
+                </div><br>
+                <label class="control-label col-sm-1" for="age">Age:</label>
+                <div class="col-sm-11">
+                    <input class="form-control" type="number" ng-model="Age" name="age"><br><br>
+                </div>
+                <label class="control-label col-sm-1" for="roll">Roll No:</label>
+                <div class="col-sm-11">
+                    <input class="form-control" type="number" ng-model="rollno" name="roll"><br><br>
+                </div>
+                <label class="control-label col-sm-1" for="email">Email:</label>
+                <div class="col-sm-11">
+                    <input class="form-control" type="Email" ng-model="email" name="email"><br><br>
+                </div>
+                <label class="control-label col-sm-1" for="gender">Gender:</label>
+                <div class="col-sm-11">
+                    <select class="form-control" ng-model="ismale" name="gender">
+
+                        <option value="true" ng-selected="male">Male</option>
+                        <option value="false" ng-selected="female">Female</option>
+                    </select>
+                </div>
+                <br><br><br>
+                <div>
+                    <label class="control-label col-sm-1" for="date">Date:</label>
+
+                    <input type="date" ng-model="date" name="date"><br><br>
+                </div>
+                <br><br>
+                <button ng-click="addStudent()" class="btn  btn-success btn-lg btn-block " ng-hide="editModeOn">Add
+                    Student</button>
+                <button ng-click="EditStudentAct()" class="btn  btn-primary btn-lg btn-block " ng-show="editModeOn">Edit
+                    Student</button>
+                <button ng-click="cancelEdit()" class="btn  btn-danger btn-lg btn-block " ng-show="editModeOn">Cancel
+                    Edit</button>
+                <br><br>
+            </div>
+        </div>
+        <div ng-controller="studentController">
+            <table style="font-size: 20px;" class="text-center table table-striped table-bordered table-hover ">
+
+                <head>
+                    <tr>
+                        <td>Delete</td>
+                        <td>Edit</td>
+                        <td>Name</td>
+                        <td>Rollno</td>
+                        <td>Email</td>
+                        <td>Gender</td>
+                        <td>age</td>
+                        <td>Date</td>
+                    </tr>
+                    </tr>
+                    </thead>
+                    <tr ng-repeat="student in studentData">
+                        <td><button id="{{student.id}}" ng-click="studentDelete($event)"
+                                class="btn-danger btn-md">Delete</button> </td>
+                        <td><button id="e{{student.id}}" ng-click="studentEdit($event)"
+                                class="btn-warning btn-md">Edit</button> </td>
+                        <td>{{student.name}}</td>
+                        <td>{{student.rollNo}}</td>
+                        <td>{{student.email}}</td>
+                        <td>{{student.isMale | genderFilter }}</td>
+                        <td>{{student.age}}</td>
+                        <td>{{student.date | date : mm/dd/yyyy}}</td>
+                    </tr>
+            </table>
+        </div>
     </div>
 
 
@@ -119,14 +147,28 @@
                 }
                 obj.DeleteStudent = function (id) {
                     return $q(function (resolve, reject) {
-                        $http({
-                            method: 'DELETE',
-                            url: "http://gsmktg.azurewebsites.net/api/v1/techlabs/test/students/" +
-                                id
-                        }).then(function success(response) {
-                            resolve("student Deleted")
-                        })
+                        var deleteflag = getConfirmation();
+                        if (deleteflag == true)
+                            $http({
+                                method: 'DELETE',
+                                url: "http://gsmktg.azurewebsites.net/api/v1/techlabs/test/students/" +
+                                    id
+                            }).then(function success(response) {
+                                resolve("student Deleted")
+                            })
+                        else alert("cancel Edit")
                     })
+
+                    function getConfirmation() {
+                        var retVal = confirm("Do you want to continue ?");
+                        if (retVal == true) {
+
+                            return true;
+                        } else {
+
+                            return false;
+                        }
+                    }
                 }
 
                 obj.getStudentDataForEdit = function (id) {
@@ -191,6 +233,7 @@
                     $scope.rollno = null
                     $scope.ismale = null
                     $scope.email = null
+                    $scope.date = null
                     studentFetchService.AddStudent(name, rollno, Age, ismale, email, date)
                         .then(function (result) {
                             $scope.result = result;
@@ -260,6 +303,16 @@
                                 })
                         })
 
+
+                }
+                $scope.cancelEdit = function () {
+                    $scope.name = null
+                    $scope.Age = null
+                    $scope.rollno = null
+                    $scope.ismale = null
+                    $scope.email = null
+                    $scope.date = null;
+                    $rootScope.editModeOn = false;
 
                 }
             })
