@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+
+<head>
+    <title>Employee Tree</title>
+</head>
+<style>
+    #simple-treeview,
+    #product-details {
+        display: inline-block;
+    }
+
+    #product-details {
+        vertical-align: top;
+        width: 400px;
+        height: 420px;
+        margin-left: 20px;
+    }
+
+    #product-details>img {
+        border: none;
+        height: 300px;
+        width: 400px;
+    }
+
+    #product-details>.name {
+        text-align: center;
+        font-size: 20px;
+    }
+
+    #product-details>.price {
+        text-align: center;
+        font-size: 24px;
+    }
+
+    .dark #product-details>div {
+        color: #f0f0f0;
+    }
+
+    .hidden {
+        visibility: hidden;
+    }
+</style>
+
+<body ng-app="employeeTree">
+
+    <div class="container">
+        <div ng-controller="treeController"></div>
+        <table>
+            <thead>
+                <tr>
+                    <td> <button>+</button> </td>
+                    <td> Designation</td>
+                    <td>empID</td>
+                    <td>Empname</td>
+                    <td>managerId</td>
+                    <td>salary</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td > <button ng-click="expand()" >+</button></td>
+                    <td> {{president.designation}}</td>
+                    <td>{{president.empid}}</td>
+                    <td>{{president.name}}</td>
+                    <td>{{president.managerid}}</td>
+                    <td>{{president.salary}}</td>
+                </tr>
+                <tr ng-repeat ="emp in empUnderme" >
+                        <td><button ng-click="expandEmp($event)" id="{{emp.empid}}" >+</button></td>
+                        <td> {{emp.designation}}</td>
+                        <td>{{emp.empid}}</td>
+                        <td>{{emp.name}}</td>
+                        <td>{{emp.managerid}}</td>
+                        <td>{{emp.salary}}</td>
+                    </tr>
+            </tbody>
+        </table>
+
+
+    </div>
+</body>
+<script src="angular.js">
+</script>
+<script>
+    employeeTreeApp = angular.module("employeeTree", [])
+    employeeTreeApp.factory("employeeData", function ($q, $http) {
+        obj = {};
+        obj.getEmployeeData = function () {
+            return $q(function (resolve, reject) {
+                $http({
+                    method: 'GET',
+                    url: 'https://api.myjson.com/bins/xvwar'
+                }).then(function (response) {
+
+                    resolve(response)
+                })
+            })
+        }
+        return obj;
+    })
+
+    employeeTreeApp.factory("treeService", function () {
+        obj = {}
+        obj.getEmployeeUnderMangerID = function (empid, data) {
+            emp = [];
+            for (var index = 0; index < data.length; index++) {
+                if (empid == data[index].managerid) {
+                    emp.push(data[index])
+                }
+            }
+            return emp;
+        }
+        return obj;
+    })
+
+
+    employeeTreeApp.controller("treeController", function ($rootScope, employeeData, treeService) {
+        president = {}
+        employeeData.getEmployeeData().then(function (result) {
+
+            data = result.data;
+            for (index = 0; index < data.length; index++) {
+                if (data[index].managerid == 'NULL') {
+                    president = data[index]
+                    break;
+                }
+            }
+            employee = treeService.getEmployeeUnderMangerID(president.empid, data)
+
+            president['empUnderme'] = employee;
+
+
+            pre = president;
+
+            function underMeFunction(obj) {
+                if (obj.empUnderme.length != 0) {
+                    manager = obj.empUnderme;
+                    for (var index1 = 0; index1 < manager.length; index1++) {
+                        manager[index1]['empUnderme'] = treeService.getEmployeeUnderMangerID(manager[
+                                index1]
+                            .empid, data)
+                    }
+                    for (var ind = 0; ind < manager.length; ind++) {
+                        underMeFunction(manager[ind])
+                        
+                    }
+                }
+            }
+            underMeFunction(president);
+            console.log(president)
+            $rootScope.president = president;
+            $rootScope.expand=  function(){
+                $rootScope.empUnderme = $rootScope.president.empUnderme
+            }
+            $rootScope.expand=  function(){
+                $rootScope.empUnderme = $rootScope.president.empUnderme
+            }
+           $rootScope.expandEmp = function($event){
+               id= event.target.id;
+               console.log(id)
+               
+           }           
+        })
+ 
+        
+    })
+</script>

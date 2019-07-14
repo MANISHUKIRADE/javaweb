@@ -1,0 +1,31 @@
+<section>
+    <table style="font-size: 20px;" class="text-center table table-striped table-bordered table-hover ">
+
+        <thead>
+            <tr>
+                <td>Delete</td>
+                <td>Edit</td>
+                <td>Name</td>
+                <td>Rollno</td>
+                <td>Email</td>
+                <td>Gender</td>
+                <td>age</td>
+                <td>Date</td>
+            </tr>
+            </tr>
+        </thead>
+        <tr ng-repeat="student in studentData">
+            <td><button id="{{student.id}}" ng-click="studentDelete($event)" class="btn-danger btn-md">Delete</button>
+            </td>
+            <td><button id="e{{student.id}}" ng-click="studentEdit($event)" class="btn-warning btn-md">Edit</button>
+            </td>
+            <td>{{student.name}}</td>
+            <td>{{student.rollNo}}</td>
+            <td>{{student.email}}</td>
+            <td>{{student.isMale | genderFilter }}</td>
+            <td>{{student.age}}</td>
+            <td>{{student.date | date : mm/dd/yyyy}}</td>
+        </tr>
+    </table>
+
+</section>

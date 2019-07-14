@@ -1,0 +1,49 @@
+<section>
+
+    <div class="well" ng-show="currentuser">
+        <div class="container">
+            <h5>Employee Data of User</h5>
+            <p>{{currentuser.username}}</p>
+            <p>
+                <button ng-click="logOut()" class="btn btn-primary btn-lg">logout</button>
+            </p>
+        </div>
+    </div>
+
+
+    <nav ng-show="currentuser" class="navbar navbar-default navbar-top" role="navigation">
+        
+        <ul class="nav navbar-nav">
+            <li class="active">
+                <a href="#!/home">Home</a>
+            </li>
+            <li>
+                <a href="#!/add">Add</a>
+            </li>
+        </ul>
+    </nav>
+
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th>name</th>
+                <th>Designation</th>
+                <th>salary</th>
+                <th>age</th>
+                <th>date</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="employee in employees">
+                <td>{{employee.name}}</td>
+                <td>{{employee.designation}}</td>
+                <td>{{employee.salary}}</td>
+                <td>{{employee.age}}</td>
+                <td>{{employee.date | date : dd/mm/yyyy}}</td>
+            </tr>
+        </tbody>
+    </table>
+
+
+
+</section>

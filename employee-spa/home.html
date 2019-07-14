@@ -1,0 +1,23 @@
+<section class="container text-center">
+    <button ng-show="currentUser" ng-click="logOut()">Log Out</button>
+    <table class="text-center table table-striped table-bordered table-hover" ng-show="currentUser">
+        <tr>
+            <td>Id</td>
+            <td>Name</td>
+            <td>Date</td>
+            <td>Role</td>
+            <td>Age</td>
+            <td ng-show="currentUser">Edit</td>
+            <td ng-show="currentUser">Delete</td>
+        </tr>
+        <tr ng-repeat="employe in employeesData">
+            <td>{{$index+1}}</td>
+            <td>{{employe.name}}</td>
+            <td>{{employe.date | date : mm/dd/yyyy }}</td>
+            <td>{{employe.Role}}</td>
+            <td>{{employe.age}}</td>
+            <td ng-show="currentUser" class="alert-warning"><a href="#!/edit/{{$index}}">Edit</a> </td>
+            <td ng-show="currentUser"><button class="btn-sm btn-danger" id="{{$index}}" ng-click="deleteFunction($event)" >Delete</button></td>
+        </tr>
+    </table>
+</section>

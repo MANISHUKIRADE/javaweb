@@ -1,0 +1,45 @@
+<section>
+    <div class="form-group">
+        <label class="control-label col-sm-1" for="name">Name:</label>
+        <div class="col-sm-11">
+            <input class="form-control" type="text" ng-model="name" name="name"><br><br>
+        </div><br>
+        <label class="control-label col-sm-1" for="age">Age:</label>
+        <div class="col-sm-11">
+            <input class="form-control" type="number" ng-model="Age" name="age"><br><br>
+        </div>
+        <label class="control-label col-sm-1" for="roll">Roll No:</label>
+        <div class="col-sm-11">
+            <input class="form-control" type="number" ng-model="rollno" name="roll"><br><br>
+        </div>
+        <label class="control-label col-sm-1" for="email">Email:</label>
+        <div class="col-sm-11">
+            <input class="form-control" type="Email" ng-model="email" name="email"><br><br>
+        </div>
+        <label class="control-label col-sm-1" for="gender">Gender:</label>
+        <div class="col-sm-11">
+            <select class="form-control" ng-model="ismale" name="gender">
+
+                <option value="true" ng-selected="male">Male</option>
+                <option value="false" ng-selected="female">Female</option>
+            </select>
+        </div>
+        <br><br><br>
+        <div>
+            <label class="control-label col-sm-1" for="date">Date:</label>
+
+            <input type="date" ng-model="date" name="date"><br><br>
+        </div>
+        <br><br>
+        <button ng-click="addStudent()" class="btn  btn-success btn-lg btn-block " ng-hide="editModeOn">Add
+            Student</button>
+        <button ng-click="EditStudentAct()" class="btn  btn-primary btn-lg btn-block " ng-show="editModeOn">Edit
+            Student</button>
+        <button ng-click="cancelEdit()" class="btn  btn-danger btn-lg btn-block " ng-show="editModeOn">Cancel
+            Edit</button>
+        <br><br>
+    </div>
+    </div>
+
+
+</section>

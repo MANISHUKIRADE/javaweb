@@ -1,0 +1,32 @@
+<section>
+
+    <div class="container">
+
+        <div class="well well-lg">
+            Add Student
+        </div>
+
+
+        <form>
+
+            <div class="form-group form-horizontal">
+                <label for="name"   >Name</label>
+                 <input type="text" name="name" class="form-control" ng-model="name" required><br><br>
+                <label for="role">Role</label>
+                 <select name="role" class="form-control" ng-model="role" required>
+                    <option value="Developer">Developer</option>
+                    <option value="Manager">Manager</option>
+                    <option value="Accountat">Accountat</option>
+                </select>
+                <br><br>
+                <label for="date">Date</label>
+                 <input type="date"class="form-control" name="date" ng-model="date" required><br><br>
+                 <label for="age">Age</label>
+                 <input type="number" class="form-control" max="100" min="1" name="age" ng-model="age" required><br><br>
+
+                <button class="btn-success btn-block" ng-click="addEmployee()">Add</button>
+            </div>
+        </form>
+    </div>
+
+</section>

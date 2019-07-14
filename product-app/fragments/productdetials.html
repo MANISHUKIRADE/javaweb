@@ -1,0 +1,23 @@
+<section>
+
+    <div class="container ">
+
+
+
+
+
+        <div class="text-center h2 well  " style="background-color: cadetblue; font-size: 40px; "> {{product.productName}} </div>
+        <div> <img src="{{product.imageUrl}}" style="width: 100px; height: 100px;"></div><br> <br>
+
+        <div style="font-size: 30px">{{product.description}}</div>
+
+        <div style="font-size: 20px">Product Code: {{product.productCode}}</div>
+        <div style="font-size: 20px">Available from: {{product.releaseDate}}</div>
+        <div style="font-size: 20px">Product Price: ${{product.price}}</div>
+        <div style="font-size: 20px">Product Rating: <star ng-bind-html=" product.starRating | Starfilter "></star>   {{product.starRating}}
+       <br><br> </div> <button type="button" ng-click="backToList()" class="btn btn-lg btn-warning">Back</button>
+        
+    </div>
+
+
+</section>

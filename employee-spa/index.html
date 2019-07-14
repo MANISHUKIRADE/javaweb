@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+
+<head>
+    <title>Employee Single Page</title>
+    <script src="angular.js"></script>
+    <script src="angular-route.js"></script>
+    
+</head>
+
+<body ng-app="employeeapp">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
+    <div class="container well text-center">
+
+
+
+        <a class="h3" href="#!/">Home</a>
+        <a class="h3" ng-show="currentUser" href="#!/add">Add</a>
+        <a class="h3" ng-hide="currentUser" href="#!/login">Login</a>
+
+    </div>
+
+    <section class="text-center" ng-view></section>
+    <script>
+        angular.module("employeeapp", ['ngRoute'])
+            .config(['$routeProvider', function ($routeProvider) {
+                $routeProvider.when("/", {
+                        templateUrl: "home.html",
+                        controller: "homeController"
+                    })
+                    .when("/add", {
+                        templateUrl: "add.html",
+                        controller: "addController"
+                    })
+                    .when("/edit/:id", {
+                        templateUrl: "edit.html",
+                        controller: "editController"
+                    })
+                    .when("/login", {
+                        templateUrl: "login.html",
+                        controller: "loginController"
+                    })
+
+            }])
+            .factory("employeeService", function () {
+
+                var Users = [{
+                    name: "ABCD",
+                    password: 1234
+                }]
+                var obj = {};
+                var employeesData = [{
+
+                        name: "Manish",
+                        Role: "Developer",
+                        date: 27 / 09 / 1019,
+                        age: 21
+                    },
+                    {
+
+                        name: "Ratnesh",
+                        Role: "manger",
+                        date: 02 / 07 / 1019,
+                        age: 21
+                    }
+                ]
+
+                var count = employeesData.length;
+
+                obj.getEmployeeData = function () {
+                    return employeesData;
+                }
+                obj.addEmplotyee = function (Name, Role, date, Age) {
+                    count++;
+                    id = count;
+                    employee = {
+
+                        name: Name,
+                        Role: Role,
+                        date: date,
+                        age: Age
+                    }
+                    employeesData.push(employee);
+
+                }
+                obj.getById = function (id) {
+                    return employeesData[id]
+                }
+                obj.setDataById = function (obj, id) {
+                    employeesData[id] = obj
+                }
+                obj.authantiacateUser = function (user) {
+                    var authentication = false;
+                    for (index = 0; index < Users.length; index++) {
+                        if ((user.name == Users[index].name) && (user.password == Users[index].password)) {
+                            authentication = true;
+                            break;
+                        }
+
+                    }
+                    return authentication;
+                }
+                obj.logout = function () {
+                    authentication = false;
+                }
+                obj.deleteService = function (id) {
+                    employeesData.splice(id, 1);
+                }
+
+                return obj;
+            })
+            .controller("homeController", function ($scope, $rootScope, employeeService) {
+                $scope.employeesData = employeeService.getEmployeeData();
+                $rootScope.logOut = function () {
+                    employeeService.logout;
+                    delete $rootScope.currentUser;
+                }
+                $rootScope.deleteFunction = function (event) {
+                    employeeService.deleteService(event.target.id);
+                }
+
+            })
+            .controller("addController", function ($location, $scope, employeeService) {
+                $scope.addEmployee = function () {
+                    Name = $scope.name;
+                    date = $scope.date;
+                    role = $scope.role;
+                    Age = $scope.age
+                    employeeService.addEmplotyee(Name, role, date, Age)
+                    $scope.name = null
+                    $scope.date = null
+                    $scope.role = null
+                    $scope.age = null
+                    $location.path('/')
+                }
+
+            })
+            .controller("editController", function ($location, $scope, employeeService, $routeParams) {
+                $scope.Employee = {
+                    name: "",
+                    date: "",
+                    age: "",
+                    Role: ""
+                }
+
+                $scope.getData = employeeService.getById($routeParams.id)
+                console.log($scope.getData);
+                console.log($scope.getData.name);
+
+                $scope.Employee.name = $scope.getData.name
+                $scope.Employee.date = $scope.getData.date
+                $scope.Employee.age = $scope.getData.age
+
+                $scope.Employee.role = $scope.getData.Role
+                $scope.editData = function () {
+
+                    $scope.Employee.Name = $scope.Employee.name
+                    $scope.Employee.date = $scope.Employee.date
+                    $scope.Employee.age = $scope.Employee.age;
+                    $scope.Employee.Role = $scope.Employee.role
+
+                    $scope.setData = employeeService.setDataById($scope.Employee, $routeParams.id)
+
+
+                    $location.path("/");
+                }
+            })
+            .controller("loginController", function ($scope, $rootScope, $location, employeeService) {
+                $scope.login = function () {
+                    var username = $scope.username;
+                    var password1 = $scope.password1;
+                    user = {
+                        name: username,
+                        password: password1
+                    }
+                    var auth = employeeService.authantiacateUser(user)
+                    if (auth == true) {
+                        $rootScope.currentUser = user;
+                        $location.path("/");
+                    } else alert("authentication fails")
+
+                }
+            })
+    </script>
+</body>

@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+
+<head>
+    <title>Product App</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+
+<link rel="stylesheet" href="script/awsomfont.css">
+
+</head>
+
+<style>
+    span.stars,
+    span.stars span {
+        display: block;
+        background: url('https://apppresser.com/wp-content/uploads/2015/11/stars.png') 0 -16px repeat-x;
+        width: 80px;
+        height: 16px;
+    }
+
+    span.stars span {
+        background-position: 0 0;
+    }
+</style>
+
+<body ng-app="productApp">
+
+    <nav class="navbar navbar-default navbar-static-top" role="navigation">
+        <a class="navbar-brand" href="#">ACME Product Manager</a>
+        <ul class="nav navbar-nav">
+            <li class="active">
+                <a href="#!/">Home</a>
+            </li>
+            <li>
+                <a href="#!/productlist">Product List</a>
+            </li>
+        </ul>
+    </nav>
+    <section ng-view></section>
+
+
+    <script src="script/angular.js"></script>
+    <script src="script/angular-route.js"></script>
+    <script src="script/angular-sanitize.js"></script>
+
+
+    <script>
+        var productApp = angular.module("productApp", ["ngRoute", "ngSanitize"]);
+        productApp.filter(function (number) {
+            number1 = number * 10;
+            digit = number1 / 10;
+
+            if (digit < 5) {
+                number = number1 / 10;
+            } else {
+                number = number1 / 10; + 1;
+            }
+
+        })
+        productApp.factory("productfetch", ['$http', '$q', function ($http, $q) {
+            obj = {};
+
+            obj.getProductList = function () {
+                return $q(function (resolve, reject) {
+                    $http({
+                        method: 'GET',
+                        url: "https://api.myjson.com/bins/1aeq5r/"
+                    }).then(function (response) {
+                        console.log(response)
+                        resolve(response)
+                    })
+                })
+            }
+
+            return obj;
+        }])
+        productApp.config(function ($routeProvider) {
+            $routeProvider.when("/", {
+                    templateUrl: "fragments/welcome.html",
+                    controller: "welcomeController"
+                })
+                .when("/productlist", {
+                    templateUrl: "fragments/productlist.html",
+                    controller: "productListController"
+                })
+                .when("/detail/:id", {
+                    templateUrl: "fragments/productdetials.html",
+                    controller: "editController"
+                })
+        })
+        productApp.controller("welcomeController", function ($scope) {
+            $scope.developername = "Manish"
+            $scope.email="manishukirade@yahoo.com"
+        })
+        productApp.controller("productListController", function ($scope, $rootScope, productfetch) {
+            productfetch.getProductList().then(function (result) {
+                $rootScope.productList = result.data;
+            });
+            $scope.secondRate = 3;
+            $scope.showimage = true;
+            $scope.imageFunction = function () {
+                image = $scope.showimage
+                if (image == true) {
+                    image = false;
+                } else {
+                    image = true
+                }
+                $scope.showimage = image;
+            }
+        })
+
+
+        productApp.controller("editController", function ($routeParams, $scope, $rootScope,$location) {
+                id = $routeParams.id
+
+                for (i = 0; i < $rootScope.productList.length; i++) {
+                    if ($rootScope.productList[i].productId == id) {
+                        $scope.product = $rootScope.productList[i];
+                        break;
+                    }
+                }
+               $scope.backToList = function(){
+                  $location.path("/productlist")
+               }
+
+
+            })
+            .directive('star', function () {
+                var directive = {
+                    template: '<i class="fa fa-star" aria-hidden="true"></i>',
+                    restrict: 'E'
+                };
+                return directive;
+
+            })
+            .filter('Starfilter', function () {
+                return function (input) {
+                    let images = "";
+                    let index;
+                    for (index = 1; index < input; index++) {
+                        images = images + "<i class='fa fa-star' aria-hidden='true'></i>";
+                    }
+                    index--;
+                    console.log("index" + index);
+                    let temp = input - index;
+                    console.log("temp" + temp);
+                    if (temp > 0) {
+                        index++;
+                        images = images + "<i class='fa fa-star-half' aria-hidden='true'></i>";
+                    }
+                    return images;
+                }
+            });
+    </script>
+
+</body>

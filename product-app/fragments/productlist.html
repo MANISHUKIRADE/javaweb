@@ -1,0 +1,43 @@
+<section>
+    <div>
+
+        <div class="form-group">
+            <label for="inputfilterby name" class="col-sm-1 control-label">filterby name:</label>
+            <div class="col-sm-2">
+                <input type="text" ng-model="productname" name="filterby name" id="inputfilterby name"
+                    class="form-control" value="" required="required" pattern="" title="">
+            </div>
+        </div>
+        <br><br>
+    </div>
+    <table style="font-size: 20px;" class="text-center table table-striped table-bordered table-hover ">
+        <thead>
+            <td><button ng-show="showimage" ng-click="imageFunction()" class="btn btn-primary primary">Hide
+                    Image</button>
+                <button ng-hide="showimage" ng-click="imageFunction()" class="btn btn-primary primary">Show
+                    Image</button>
+            </td>
+
+            <td>Product</td>
+            <td>Code</td>
+            <td>Available</td>
+            <td>Price</td>
+            <td>Rating</td>
+
+        </thead>
+        <tbody>
+            <tr ng-repeat="product in productList | filter: productname">
+                <td><img ng-show="showimage" src="{{product.imageUrl}}" style="width: 50px; height: 50px;"></td>
+                <td><a href="#!/detail/{{product.productId}}">{{product.productName}}</a> </td>
+                <td>{{product.productCode}}</td>
+                <td>{{product.releaseDate}}</td>
+                <td>${{product.price}}</td>
+                <td>
+                    <star ng-bind-html=" product.starRating | Starfilter "></star>
+                    {{product.starRating}}
+                </td>
+
+            </tr>
+        </tbody>
+    </table>
+</section>

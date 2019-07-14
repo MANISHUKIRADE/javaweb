@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+
+<head>
+    <title>Employee Db Service</title>
+    <script src="angular.js"></script>
+    <script src="angular-route.js"></script>
+</head>
+
+<body ng-app="employeeData">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
+    <div class="jumbotron" ng-controller="firstPageController" ng-hide="currentuser">
+        <div class="container">
+            <h1>Employee DataBase</h1>
+            <p>Login For See The Employee Button </p>
+            <p>
+                <button class="btn btn-primary btn-lg" ng-click="gotoLogin()">Login !</button>
+            </p>
+        </div>
+    </div>
+    <section ng-view></section>
+    <script>
+        var app = angular.module("employeeData", ["ngRoute"])
+        app.factory("employeeDbServices", function () {
+            var obj = {};
+            Users = [{
+                username: "Manish9797",
+                password: "9797",
+                Employees: [{
+                    name: "manish",
+                    designation: "Developer",
+                    salary: 15000,
+                    age: 21,
+                    date: 10/07/2019 
+                }]
+            }]
+
+            obj.authneticateUser = function (username, password) {
+                user = {};
+                if (localStorage.getItem("Users")) {
+                    User =JSON.parse (localStorage.getItem("Users"))
+                    for (index = 0; index < User.length; index++) {
+                        if ((User[index].username == username) && (User[index].password)) {
+
+                            user = User[index]
+                            break;
+                        }
+                    }
+                } else {
+                    for (index = 0; index < Users.length; index++) {
+                        if ((Users[index].username == username) && (Users[index].password)) {
+
+                            user = Users[index]
+                            break;
+                        }
+                    }
+                }
+                return user;
+            }
+            obj.setLoginState = function (user) {
+                currentuser = JSON.stringify(user);
+                localStorage.setItem("currentuser", currentuser)
+            }
+            obj.getLoginState = function () {
+                user = JSON.parse(localStorage.getItem("currentuser"))
+                return user;
+            }
+
+            obj.resetLoginState = function () {
+                localStorage.removeItem("currentuser")
+
+            }
+            obj.addEmployeeintoCurrentUser = function (user, name, designation, salary, age, date) {
+                localStorage.setItem("Users", JSON.stringify(Users))
+                var User = JSON.parse(localStorage.getItem("Users"))
+                user.Employees.push({
+                    name: name,
+                    designation: designation,
+                    salary: salary,
+                    age: age,
+                    date: date
+                })
+                for (index = 0; index < User.length; index++) {
+                    if ((User[index].username == user.name) && (User[index].password == user.password)) {
+                        User[index].Employees.push(user.Employees)
+                        $scope.currentuser.Employees.push(user.Employees);
+                        localStorage.removeItem("Users")
+                        localStorage.removeItem("currentuser")
+                        localStorage.setItem("currentuser", $rootScope.currentuser)
+                        localStorage.setItem("Users", JSON.stringify(User))
+                        break;
+                    }
+                }
+            }
+
+
+            return obj;
+        })
+        app.config(["$routeProvider", function ($routeProvider) {
+            $routeProvider.when('/login', {
+                    templateUrl: "fragments/login.html",
+                    controller: "loginController"
+                })
+                .when('/home', {
+                    templateUrl: "fragments/home.html",
+                    controller: "homeController"
+                })
+                .when('/add', {
+                    templateUrl: "fragments/add.html",
+                    controller: "addController"
+                })
+        }]);
+        app.controller("firstPageController", ["$scope", "$location", "$rootScope", "employeeDbServices", function (
+            $scope, $location,
+            $rootScope, employeeDbServices) {
+
+            user = employeeDbServices.getLoginState();
+            if ((user != undefined) || (user != null)) {
+                $rootScope.currentuser = user
+            }
+            $scope.gotoLogin = function () {
+
+                $location.path("/login")
+            }
+        }]);
+        app.controller("loginController", ["$scope", "$rootScope", "$location", "employeeDbServices", function ($scope,
+            $rootScope,
+            $location, employeeDbServices) {
+            $scope.loginAction = function () {
+                var username = $scope.username;
+                var password = $scope.password;
+                if ((username == undefined) && (password == undefined)) {
+                    alert("Enter The fields")
+                }
+
+                $rootScope.currentuser = employeeDbServices.authneticateUser(username, password)
+                if ($rootScope.currentuser.username == username) {
+                    $location.path("/home")
+                    employeeDbServices.setLoginState($rootScope.currentuser)
+                } else {
+                    $rootScope.currentuser = false;
+                    alert("Enter The Correct details")
+                }
+            }
+        }]);
+        app.controller("homeController", ["$rootScope", "$location", "$scope", "employeeDbServices", function (
+            $rootScope, $location,
+            $scope, employeeDbServices) {
+            $scope.employees = $rootScope.currentuser.Employees
+
+
+            $scope.logOut = function () {
+                $rootScope.currentuser = false;
+                employeeDbServices.resetLoginState();
+
+            }
+        }]);
+        app.controller("addController", ["$scope", "$rootScope", "$location", "employeeDbServices", function ($scope,
+            $rootScope, $location, employeeDbServices) {
+            $scope.addEmployee = function () {
+                name = $scope.name
+                designation = $scope.designation
+                salary = $scope.salary
+                age = $scope.age
+                date = $scope.date
+                employeeDbServices.addEmployeeintoCurrentUser($rootScope.currentuser, name, designation,
+                    salary, age, date)
+                $location.path("/home")
+                employeeDbServices.setLoginState($rootScope.currentuser)
+            }
+
+
+        }])
+    </script>
+
+</body>

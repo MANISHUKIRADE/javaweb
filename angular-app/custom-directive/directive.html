@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+
+<head>
+    <style>
+        .fixed-header,
+        .fixed-footer {
+            width: 100%;
+            position: fixed;
+            background: #333;
+            padding: 10px 0;
+            color: #fff;
+        }
+
+        .fixed-header {
+            top: 0;
+        }
+
+        .fixed-footer {
+            bottom: 0;
+        }
+    </style>
+    <title>Custom Directives</title>
+
+    <script src="https://code.angularjs.org/1.6.9/angular.js"></script>
+    <script src="https://code.angularjs.org/1.6.9/angular.min.js"></script>
+</head>
+
+<body ng-app="customDirective">
+    <div>
+        <div class="fixed-header" header-Nexsales></div>
+        <div class="fixed-footer" footer-Nexsales></div>
+    </div>
+    <script src="angular.js"></script>
+    <script>
+        angular.module('customDirective', [])
+
+            .directive('headerNexsales', function () {
+                return {
+                    template: "<header>Nexsales</header>"
+                };
+            })
+            .directive('footerNexsales', function () {
+                return {
+                    template: "<footer>Nexsales</footer>"
+                }
+            })
+    </script>
+</body>
